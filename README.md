@@ -10,7 +10,11 @@
 ### 插件
 
 分布式插件
-[https://git.oschina.net/smxc/garlicts-distributed](https://git.oschina.net/smxc/garlicts-distributed)
+[https://github.com/smxc/garlicts-distributed](https://github.com/smxc/garlicts-distributed)
+
+### 例子
+
+https://github.com/smxc/garlicts-example
 
 
 ### 帮助文档
