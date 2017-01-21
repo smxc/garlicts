@@ -1,4 +1,4 @@
-### Garlicts Framework简介
+### Garlicts框架简介
 
 轻量级的web框架，使用简洁的注解，无任何xml配置，不依赖spring，但保留springmvc的使用习惯，最大程度的降低大家的学习成本。 
 
