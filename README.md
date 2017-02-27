@@ -13,7 +13,7 @@ Garlicts框架的特色，就是为了简单。
 ### 插件
 
 分布式插件
-[https://git.oschina.net/smxc/garlicts-distributed](https://git.oschina.net/smxc/garlicts-distributed)
+[https://github.com/smxc/garlicts-distributed](https://github.com/smxc/garlicts-distributed)
 
 
 ### 帮助文档
