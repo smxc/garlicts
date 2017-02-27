@@ -6,6 +6,9 @@
 
 初衷：软件公司得有自己的技术积累，得有自己的内部框架，根据不同需要，不断订制改造和优化，既提高了项目的开发效率，又增加了盈利。
 
+### 特色
+
+Garlicts框架的特色，就是为了简单。
 
 ### 插件
 
@@ -20,5 +23,5 @@
 
 ### 第一个例子
 
-等待完善。。。
+example请参考 [https://github.com/smxc/garlicts-example](https://github.com/smxc/garlicts-example)
 
