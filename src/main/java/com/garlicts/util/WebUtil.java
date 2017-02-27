@@ -75,47 +75,70 @@ public class WebUtil {
     public static Map<String, Object> getRequestParamMap(HttpServletRequest request) {
         Map<String, Object> paramMap = new LinkedHashMap<String, Object>();
         try {
-            String method = request.getMethod();
-            if (method.equalsIgnoreCase("put") || method.equalsIgnoreCase("delete")) {
-                String queryString = CodecUtil.decodeURL(StreamUtil.getString(request.getInputStream()));
-                if (StringUtil.isNotEmpty(queryString)) {
-                    String[] qsArray = StringUtil.splitString(queryString, "&");
-                    if (ArrayUtil.isNotEmpty(qsArray)) {
-                        for (String qs : qsArray) {
-                            String[] array = StringUtil.splitString(qs, "=");
-                            if (ArrayUtil.isNotEmpty(array) && array.length == 2) {
-                                String paramName = array[0];
-                                String paramValue = array[1];
-                                if (checkParamName(paramName)) {
-                                    paramMap.put(paramName, paramValue);
+//            String method = request.getMethod();
+//            if (method.equalsIgnoreCase("put") || method.equalsIgnoreCase("delete")) {
+//                String queryString = CodecUtil.decodeURL(StreamUtil.getString(request.getInputStream()));
+//                if (StringUtil.isNotEmpty(queryString)) {
+//                    String[] qsArray = StringUtil.splitString(queryString, "&");
+//                    if (ArrayUtil.isNotEmpty(qsArray)) {
+//                        for (String qs : qsArray) {
+//                            String[] array = StringUtil.splitString(qs, "=");
+//                            if (ArrayUtil.isNotEmpty(array) && array.length == 2) {
+//                                String paramName = array[0];
+//                                String paramValue = array[1];
+//                                if (checkParamName(paramName)) {
+//                                    paramMap.put(paramName, paramValue);
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            } else {
+//                Enumeration<String> paramNames = request.getParameterNames();
+//                while (paramNames.hasMoreElements()) {
+//                    String paramName = paramNames.nextElement();
+//                    if (checkParamName(paramName)) {
+//                        String[] paramValues = request.getParameterValues(paramName);
+//                        if (ArrayUtil.isNotEmpty(paramValues)) {
+//                            if (paramValues.length == 1) {
+//                                paramMap.put(paramName, paramValues[0]);
+//                            } else {
+//                                StringBuilder paramValue = new StringBuilder("");
+//                                for (int i = 0; i < paramValues.length; i++) {
+//                                    paramValue.append(paramValues[i]);
+//                                    if (i != paramValues.length - 1) {
+//                                        paramValue.append(StringUtil.SEPARATOR);
+//                                    }
+//                                }
+//                                paramMap.put(paramName, paramValue.toString());
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+            
+            Enumeration<String> paramNames = request.getParameterNames();
+            while (paramNames.hasMoreElements()) {
+                String paramName = paramNames.nextElement();
+                if (checkParamName(paramName)) {
+                    String[] paramValues = request.getParameterValues(paramName);
+                    if (ArrayUtil.isNotEmpty(paramValues)) {
+                        if (paramValues.length == 1) {
+                            paramMap.put(paramName, paramValues[0]);
+                        } else {
+                            StringBuilder paramValue = new StringBuilder("");
+                            for (int i = 0; i < paramValues.length; i++) {
+                                paramValue.append(paramValues[i]);
+                                if (i != paramValues.length - 1) {
+                                    paramValue.append(",");
                                 }
                             }
+                            paramMap.put(paramName, paramValue.toString());
                         }
                     }
                 }
-            } else {
-                Enumeration<String> paramNames = request.getParameterNames();
-                while (paramNames.hasMoreElements()) {
-                    String paramName = paramNames.nextElement();
-                    if (checkParamName(paramName)) {
-                        String[] paramValues = request.getParameterValues(paramName);
-                        if (ArrayUtil.isNotEmpty(paramValues)) {
-                            if (paramValues.length == 1) {
-                                paramMap.put(paramName, paramValues[0]);
-                            } else {
-                                StringBuilder paramValue = new StringBuilder("");
-                                for (int i = 0; i < paramValues.length; i++) {
-                                    paramValue.append(paramValues[i]);
-                                    if (i != paramValues.length - 1) {
-                                        paramValue.append(StringUtil.SEPARATOR);
-                                    }
-                                }
-                                paramMap.put(paramName, paramValue.toString());
-                            }
-                        }
-                    }
-                }
-            }
+            }            
+            
         } catch (Exception e) {
             logger.error("获取请求参数出错！");
             throw new RuntimeException(e);

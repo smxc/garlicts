@@ -34,7 +34,6 @@ public class DefaultViewResolver implements ViewResolver {
                     if (jspView.isRedirect()) {
                         // 获取路径
                         String view = jspView.getView();
-                        System.out.println("view " + view);
                         // 重定向请求
                         WebUtil.redirectRequest(view, request, response);
                     } else {

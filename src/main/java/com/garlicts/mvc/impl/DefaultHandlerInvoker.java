@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.garlicts.InstanceFactory;
 import com.garlicts.ioc.BeanContainerAbility;
+import com.garlicts.mvc.GarlictsContext;
 import com.garlicts.mvc.Handler;
 import com.garlicts.mvc.HandlerInvoker;
 import com.garlicts.mvc.ViewResolver;
@@ -40,7 +41,7 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         // 创建 Action 方法的参数列表
         List<Object> actionMethodParamList = createControllerMethodParamList(request, handler);
         // 检查参数列表是否合法
-        checkParamList(controllerMethod, actionMethodParamList);
+//        checkParamList(controllerMethod, actionMethodParamList);
         // 调用 Action 方法
         Object actionMethodResult = invokeActionMethod(controllerMethod, controllerInstance, actionMethodParamList);
         // 解析视图
@@ -67,10 +68,13 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
 //        }
         
         // 添加普通请求参数列表（包括 Query String 与 Form Data）
+//        Map<String, Object> requestParamMap = WebUtil.getRequestParamMap(request);
+//        if (MapUtil.isNotEmpty(requestParamMap)) {
+//            paramList.add(new Params(requestParamMap));
+//        }
+        
         Map<String, Object> requestParamMap = WebUtil.getRequestParamMap(request);
-        if (MapUtil.isNotEmpty(requestParamMap)) {
-            paramList.add(new Params(requestParamMap));
-        }
+        GarlictsContext.Request.put("params", requestParamMap);
         
         // 返回参数列表
         return paramList;
@@ -105,12 +109,13 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         return actionMethod.invoke(actionInstance, actionMethodParamList.toArray());
     }
 
-    private void checkParamList(Method actionMethod, List<Object> actionMethodParamList) {
-        // 判断 Action 方法参数的个数是否匹配
-        Class<?>[] actionMethodParameterTypes = actionMethod.getParameterTypes();
-        if (actionMethodParameterTypes.length != actionMethodParamList.size()) {
-            String message = String.format("因为参数个数不匹配，所以无法调用 Action 方法！原始参数个数：%d，实际参数个数：%d", actionMethodParameterTypes.length, actionMethodParamList.size());
-            throw new RuntimeException(message);
-        }
-    }
+//    private void checkParamList(Method actionMethod, List<Object> actionMethodParamList) {
+//        // 判断 Action 方法参数的个数是否匹配
+//        Class<?>[] actionMethodParameterTypes = actionMethod.getParameterTypes();
+//        if (actionMethodParameterTypes.length != actionMethodParamList.size()) {
+//            String message = String.format("因为参数个数不匹配，所以无法调用 Action 方法！原始参数个数：%d，实际参数个数：%d", actionMethodParameterTypes.length, actionMethodParamList.size());
+//            throw new RuntimeException(message);
+//        }
+//    }
+    
 }

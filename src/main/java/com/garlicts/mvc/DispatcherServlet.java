@@ -20,7 +20,7 @@ import com.garlicts.util.WebUtil;
  * @author 水木星辰
  * @since 1.0
  */
-@WebServlet(urlPatterns = "/*", loadOnStartup = 0)
+@WebServlet(urlPatterns = {"*.do"}, loadOnStartup = 0)
 public class DispatcherServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 4955762961302934566L;
@@ -43,6 +43,10 @@ public class DispatcherServlet extends HttpServlet {
         // 获取当前请求相关数据
         String currentRequestMethod = request.getMethod();
         String currentRequestPath = WebUtil.getRequestPath(request);
+        
+        if(currentRequestPath.endsWith(".do")){
+        	currentRequestPath = currentRequestPath.substring(0, currentRequestPath.lastIndexOf(".do"));
+        }
         
         // 将“/”请求重定向到首页
         if (currentRequestPath.equals("/")) {

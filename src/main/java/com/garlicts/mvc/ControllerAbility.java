@@ -73,7 +73,7 @@ public class ControllerAbility {
 			for(RequestMethod e : requestMethod){
 				putActionMap(e.name(), requestPath, controllerClass, controllerMethod, commonControllerMap, regexpControllerMap);
 			}
-		}  	
+		}
     	
     }
 
