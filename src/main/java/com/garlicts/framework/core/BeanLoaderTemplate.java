@@ -36,13 +36,17 @@ public class BeanLoaderTemplate{
     /**
      * 获取指定package包下的所有class 
      */
+    //bug
     public final List<Class<?>> getBeanClassList(String packageName) {
         	
     		// 获取框架下所有的类
-            List<Class<?>> garlictsClassList = getBeanClassListIterate("com.garlicts.framework");
+//            List<Class<?>> garlictsClassList = getBeanClassListIterate("com.garlicts.framework");
             // 获取插件包路径下所有的类
-            List<Class<?>> pluginClassList = getBeanClassListIterate("com.garlicts.plugin"); 
-            garlictsClassList.addAll(pluginClassList);
+//            List<Class<?>> pluginClassList = getBeanClassListIterate("com.garlicts.framework.plugin");
+//            if(pluginClassList.size() > 0){
+//            	garlictsClassList.addAll(pluginClassList);
+//            }
+            
             List<Class<?>> customerClassList = null;
             
             if(StringUtil.isNotBlank(packageName)){
@@ -50,12 +54,12 @@ public class BeanLoaderTemplate{
             	if(!packageName.contains("com.galicts")){
             		
             		customerClassList = getBeanClassListIterate(packageName);
-                    boolean disjoint = Collections.disjoint(garlictsClassList, customerClassList);
-                    if(disjoint){
-                    	garlictsClassList.addAll(customerClassList);
-                    }else{
-                    	throw new RuntimeException("自定义Bean和框架内定义的Bean发生了重名");
-                    }            		
+//                    boolean disjoint = Collections.disjoint(garlictsClassList, customerClassList);
+//                    if(disjoint){
+//                    	garlictsClassList.addAll(customerClassList);
+//                    }else{
+//                    	throw new RuntimeException("自定义Bean和框架内定义的Bean发生了重名");
+//                    }            		
             		
             	}else{
             		throw new RuntimeException("自定义工程的包名与框架包名发生重名");
@@ -63,7 +67,8 @@ public class BeanLoaderTemplate{
             	
             }
 
-            return garlictsClassList;
+//            return garlictsClassList;
+            return customerClassList;
     }
 
     public List<Class<?>> getBeanClassListIterate(String packageName) {
@@ -206,11 +211,10 @@ public class BeanLoaderTemplate{
         
         for(Class<?> cls : beanMap.keySet()){
         	
-        	beanMap.get(cls);
-        	
-//            if (superClass.isAssignableFrom(cls) && !superClass.equals(cls)) {
-//            	classList.add(cls);
-//            }
+            if (superClass.isAssignableFrom(cls) && !superClass.equals(cls)) {
+            	classList.add(cls);
+            }
+            
         }
         
         return classList;		

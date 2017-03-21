@@ -1,4 +1,4 @@
-package com.garlicts.security;
+package com.garlicts.framework.security;
 
 import java.io.IOException;
 

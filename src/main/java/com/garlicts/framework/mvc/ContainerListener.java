@@ -11,9 +11,9 @@ import javax.servlet.annotation.WebListener;
 import com.garlicts.framework.AbilityLoader;
 import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.config.PropertiesProvider;
+import com.garlicts.framework.ioc.BeanContainerAbility;
 import com.garlicts.framework.plugin.Plugin;
 import com.garlicts.framework.plugin.PluginAbility;
-import com.garlicts.framework.plugin.WebPlugin;
 import com.garlicts.framework.util.StringUtil;
 
 /**
@@ -37,7 +37,7 @@ public class ContainerListener implements ServletContextListener {
         // 添加 Servlet 映射
         addServletMapping(servletContext);
         // 注册 WebPlugin
-        registerWebPlugin(servletContext);
+        registerPlugin(servletContext);
     }
 
     /**
@@ -47,6 +47,8 @@ public class ContainerListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent sce) {
         // 销毁插件
         destroyPlugin();
+        // 销毁Bean容器
+        BeanContainerAbility.destroy();
     }
 
     private void addServletMapping(ServletContext context) {
@@ -75,19 +77,24 @@ public class ContainerListener implements ServletContextListener {
         }
     }
 
-    private void registerWebPlugin(ServletContext servletContext) {
+    private void registerPlugin(ServletContext servletContext) {
         List<Plugin> pluginList = PluginAbility.getPluginList();
         for (Plugin plugin : pluginList) {
-        	// web插件
-            if (plugin instanceof WebPlugin) {
-                WebPlugin webPlugin = (WebPlugin) plugin;
-                webPlugin.register(servletContext);
-            }
+        	
+//        	// web插件
+//            if (plugin instanceof WebPlugin) {
+//                WebPlugin webPlugin = (WebPlugin) plugin;
+//                webPlugin.register(servletContext);
+//            }
+        	
 //            // 分布式插件
 //            else if(plugin instanceof DistributedPlugin){
 //            	DistributedPlugin distributedPlugin = (DistributedPlugin) plugin;
 //            	distributedPlugin.init();
 //            }
+        	
+        	plugin.init();
+        	
         }
     }
 

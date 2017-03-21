@@ -27,7 +27,7 @@ public class DispatcherServlet extends HttpServlet {
 
     private HandlerMapping handlerMapping = InstanceFactory.getHandlerMapping();
     private HandlerInvoker handlerInvoker = InstanceFactory.getHandlerInvoker();
-    private HandlerExceptionResolver handlerExceptionResolver = InstanceFactory.getHandlerExceptionResolver();
+//    private HandlerExceptionResolver handlerExceptionResolver = InstanceFactory.getHandlerExceptionResolver();
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -73,7 +73,8 @@ public class DispatcherServlet extends HttpServlet {
             handlerInvoker.invokeHandler(request, response, handler);
         } catch (Exception e) {
             // 处理 Action 异常
-            handlerExceptionResolver.resolveHandlerException(request, response,e);
+//            handlerExceptionResolver.resolveHandlerException(request, response,e);
+        	e.printStackTrace();
         } finally {
             // 销毁 GarlictsContext
             GarlictsContext.destroy();

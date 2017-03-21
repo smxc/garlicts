@@ -8,11 +8,11 @@ import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.dao.JdbcTemplate;
 import com.garlicts.framework.datasource.DataSourceFactory;
 import com.garlicts.framework.datasource.impl.DefaultDataSourceFactory;
-import com.garlicts.framework.mvc.HandlerExceptionResolver;
+//import com.garlicts.framework.mvc.HandlerExceptionResolver;
 import com.garlicts.framework.mvc.HandlerInvoker;
 import com.garlicts.framework.mvc.HandlerMapping;
 import com.garlicts.framework.mvc.ViewResolver;
-import com.garlicts.framework.mvc.impl.DefaultHandlerExceptionResolver;
+//import com.garlicts.framework.mvc.impl.DefaultHandlerExceptionResolver;
 import com.garlicts.framework.mvc.impl.DefaultHandlerInvoker;
 import com.garlicts.framework.mvc.impl.DefaultHandlerMapping;
 import com.garlicts.framework.mvc.impl.DefaultViewResolver;
@@ -70,9 +70,9 @@ public class InstanceFactory {
     /**
      * 获取 HandlerExceptionResolver
      */
-    public static HandlerExceptionResolver getHandlerExceptionResolver() {
-        return getInstance(FrameworkConstant.HANDLER_EXCEPTION_RESOLVER, DefaultHandlerExceptionResolver.class);
-    }
+//    public static HandlerExceptionResolver getHandlerExceptionResolver() {
+//        return getInstance(FrameworkConstant.HANDLER_EXCEPTION_RESOLVER, DefaultHandlerExceptionResolver.class);
+//    }
 
     /**
      * 获取 ViewResolver

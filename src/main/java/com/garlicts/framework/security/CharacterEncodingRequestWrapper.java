@@ -1,11 +1,12 @@
-package com.garlicts.security;
+package com.garlicts.framework.security;
 
 import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 
-import com.garlicts.util.StringUtil;
+import com.garlicts.framework.util.StringUtil;
+
 
 /**
  * HttpServletRequest增强类

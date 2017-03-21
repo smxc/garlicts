@@ -39,7 +39,7 @@ public class AopProxyAbility {
     /**
      * 获取插件包名
      */
-    private static final String pluginPackage = PropertiesProvider.getString(FrameworkConstant.PLUGIN_PACKAGE);
+//    private static final String pluginPackage = PropertiesProvider.getString(FrameworkConstant.PLUGIN_PACKAGE);
 
     static {
         try {
@@ -89,16 +89,23 @@ public class AopProxyAbility {
 //    }
 
     private static void addAspectProxy(Map<Class<?>, List<Class<?>>> proxyMap) throws Exception {
+    	
         // 获取切面类（所有继承于 AspectProxy 的类）
         List<Class<?>> aspectProxyClassList = beanLoader.getBeanClassListBySuper(basePackage, AspectProxy.class);
-        
-        // 添加插件包下所有的切面类
-        if(StringUtil.isNotEmpty(pluginPackage)){
-        	aspectProxyClassList.addAll(beanLoader.getBeanClassListBySuper(pluginPackage, AspectProxy.class));
-        }
+//        List<Class<?>> pluginBeanClassList = beanLoader.getBeanClassListBySuper("com.garlicts.framework.plugin", AspectProxy.class);
+
+//         添加插件包下所有的切面类
+//        if(StringUtil.isNotEmpty(pluginPackage)){
+//        	aspectProxyClassList.addAll();
+//        }
+        	
+//        if(pluginBeanClassList.size() > 0){
+//        	aspectProxyClassList.addAll(pluginBeanClassList);
+//        }
     	
         // 排序切面类
 //        sortAspectProxyClassList(aspectProxyClassList);
+        
         // 遍历切面类
         for (Class<?> aspectProxyClass : aspectProxyClassList) {
             // 判断 Aspect 注解是否存在

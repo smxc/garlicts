@@ -2,6 +2,12 @@ package com.garlicts.framework.aop.proxy;
 
 import java.lang.reflect.Method;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.garlicts.framework.core.BeanLoaderTemplate;
+
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -14,6 +20,8 @@ import net.sf.cglib.proxy.MethodProxy;
  */
 public class ProxyManager {
 
+	private static final Logger logger = LoggerFactory.getLogger(ProxyManager.class); 
+	
 	/**
 	 * 根据目标类targetClass和代理链proxyList，生成代理对象
 	 * @param targetClass
@@ -23,7 +31,7 @@ public class ProxyManager {
     @SuppressWarnings("unchecked")
     public static <T> T createProxy(final Class<?> targetClass, final List<Proxy> proxyList) {
     	
-    	System.out.println("ProxyManager#createProxy===================================");
+    	logger.info(new StringBuffer("创建代理对象：").append(targetClass).toString());
     	
         return (T) Enhancer.create(targetClass, new MethodInterceptor() {
             @Override

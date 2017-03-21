@@ -1,10 +1,11 @@
 package com.garlicts.framework.ioc;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.aop.annotation.Aspect;
@@ -13,10 +14,8 @@ import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.core.fault.InitializationError;
 import com.garlicts.framework.ioc.annotation.Bean;
 import com.garlicts.framework.mvc.annotation.Controller;
-import com.garlicts.framework.plugin.DistributedPlugin;
 import com.garlicts.framework.plugin.Plugin;
 import com.garlicts.framework.transaction.annotation.Service;
-import com.garlicts.framework.util.ClassUtil;
 
 /**
  * 初始化相关 Bean 类
@@ -25,6 +24,8 @@ import com.garlicts.framework.util.ClassUtil;
  * @since 1.0
  */
 public class BeanContainerAbility{
+	
+	private static final Logger logger = LoggerFactory.getLogger(BeanContainerAbility.class);
 
     /**
      * Bean Map（Bean的Class对应实例）
@@ -36,11 +37,12 @@ public class BeanContainerAbility{
      * 获取基础包名
      */
     private static final String basePackage = PropertiesProvider.getString(FrameworkConstant.BASE_PACKAGE);
-    private static final String pluginPackage = PropertiesProvider.getString(FrameworkConstant.PLUGIN_PACKAGE);
+//    private static final String pluginPackage = PropertiesProvider.getString(FrameworkConstant.PLUGIN_PACKAGE);
     
     static {
         try {
             // 获取应用包路径下所有的类
+        	//bug
         	List<Class<?>> classList = new BeanLoaderTemplate().getBeanClassList(basePackage);
         	// 获取插件包路径下所有的类
 //        	List<Class<?>> pluginClassList = new BeanLoaderTemplate().getBeanClassList(pluginPackage);
@@ -62,6 +64,10 @@ public class BeanContainerAbility{
                     Object beanInstance = cls.newInstance();
                     // 将 Bean 实例放入 Bean Map 中（键为 Bean 类，值为 Bean 实例）
                     beanMap.put(cls, beanInstance);
+                    
+                    //打印注册的bean
+                    logger.info(new StringBuffer("加载Class[Class | Class的对象]：").append(cls).append(" | ").append(beanInstance).toString());
+                    
                 }
             }
             
@@ -114,6 +120,12 @@ public class BeanContainerAbility{
         beanMap.put(cls, obj);
     }
     
+    /**
+     * 销毁容器的所有数据 
+     */
+    public static void destroy(){
+    	beanMap.clear();
+    }
    
     
 }

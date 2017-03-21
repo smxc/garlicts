@@ -52,7 +52,7 @@ public interface FrameworkConstant {
     /**
      * 插件路径 
      */
-    String PLUGIN_PACKAGE = "garlicts.plugin.path";
+//    String PLUGIN_PACKAGE = "garlicts.plugin.path";
     
     /**
      * redis服务器ip 
