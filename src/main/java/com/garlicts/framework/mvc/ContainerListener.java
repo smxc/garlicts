@@ -1,5 +1,6 @@
 package com.garlicts.framework.mvc;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -10,7 +11,10 @@ import javax.servlet.annotation.WebListener;
 
 import com.garlicts.framework.AbilityLoader;
 import com.garlicts.framework.FrameworkConstant;
+import com.garlicts.framework.InitializeData;
+import com.garlicts.framework.InstanceFactory;
 import com.garlicts.framework.config.PropertiesProvider;
+import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.ioc.BeanContainerAbility;
 import com.garlicts.framework.plugin.Plugin;
 import com.garlicts.framework.plugin.PluginAbility;
@@ -25,6 +29,8 @@ import com.garlicts.framework.util.StringUtil;
 @WebListener
 public class ContainerListener implements ServletContextListener {
 
+	private static final BeanLoaderTemplate beanLoaderTemplate = InstanceFactory.getBeanLoaderTemplate();
+	
     /**
      * 当容器初始化时调用
      */
@@ -38,6 +44,8 @@ public class ContainerListener implements ServletContextListener {
         addServletMapping(servletContext);
         // 注册 WebPlugin
         registerPlugin(servletContext);
+        // 调用初始化类
+        invokeInitData();
     }
 
     /**
@@ -73,7 +81,6 @@ public class ContainerListener implements ServletContextListener {
         String jspPath = PropertiesProvider.getString(FrameworkConstant.JSP_PATH);
         if (StringUtil.isNotEmpty(jspPath)) {
             jspServlet.addMapping(jspPath + "*");
-            System.out.println(jspServlet.getMappings());
         }
     }
 
@@ -104,4 +111,20 @@ public class ContainerListener implements ServletContextListener {
             plugin.destroy();
         }
     }
+    
+    @SuppressWarnings(value="all")
+    private void invokeInitData(){
+    	List<Class<?>> initDataClassList = beanLoaderTemplate.getBeanClassListBySuper(FrameworkConstant.BASE_PACKAGE, InitializeData.class);
+    	for(Class<?> cls : initDataClassList){
+    		try {
+    			Object initInstatnce = BeanContainerAbility.getBean(cls);
+				Method initMethod = cls.getDeclaredMethod("init", null);
+				initMethod.setAccessible(true);
+				initMethod.invoke(initInstatnce, null);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+    	}
+    }
+    
 }

@@ -20,7 +20,7 @@ import com.garlicts.framework.util.WebUtil;
  * @author 水木星辰
  * @since 1.0
  */
-@WebServlet(urlPatterns = {"*.do"}, loadOnStartup = 0)
+@WebServlet(urlPatterns = {"*.do", "/services/*"}, loadOnStartup = 0)
 public class DispatcherServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 4955762961302934566L;
@@ -39,13 +39,17 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     public void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 设置请求编码方式
-        request.setCharacterEncoding(FrameworkConstant.UTF_8);
+//        request.setCharacterEncoding(FrameworkConstant.UTF_8);
         // 获取当前请求相关数据
         String currentRequestMethod = request.getMethod();
         String currentRequestPath = WebUtil.getRequestPath(request);
         
         if(currentRequestPath.endsWith(".do")){
         	currentRequestPath = currentRequestPath.substring(0, currentRequestPath.lastIndexOf(".do"));
+        }
+        
+        if(currentRequestPath.contains("/services")){
+        	currentRequestPath = currentRequestPath.replaceAll("/services", "");
         }
         
         // 将“/”请求重定向到首页

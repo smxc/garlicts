@@ -35,7 +35,7 @@ public final class AbilityLoader {
         // 按照顺序加载类
         for (Class<?> cls : abilityList) {
             ClassUtil.loadClass(cls.getName());
-            logger.info(cls.getName() + " 启动成功 ");
+            logger.info(new StringBuffer("加载能力组件：").append(cls.getName()).toString());
         }
     }
 }

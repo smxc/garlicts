@@ -12,6 +12,9 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 编码过滤器
  * 此过滤器用来解决解决get、post请求方式下的中文乱码问题 
@@ -20,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebFilter(urlPatterns={"/*"})
 public class CharacterEncodingFilter implements Filter {
+	
+	private final Logger logger = LoggerFactory.getLogger(CharacterEncodingFilter.class);
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
@@ -28,6 +33,8 @@ public class CharacterEncodingFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
+		
+		logger.info(new StringBuffer("进入编码过滤器：").append(CharacterEncodingFilter.class.getName()).toString());
 		
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
