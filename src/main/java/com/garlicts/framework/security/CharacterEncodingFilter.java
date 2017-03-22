@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 /**
  * 编码过滤器
  * 此过滤器用来解决解决get、post请求方式下的中文乱码问题 
- * @since V1.0
+ * @since 1.0
  * @author 水木星辰
  */
 @WebFilter(urlPatterns={"/*"})
