@@ -25,3 +25,6 @@ Garlicts框架的特色，就是为了简单。
 
 example请参考 [https://github.com/smxc/garlicts-example](https://github.com/smxc/garlicts-example)
 
+
+### QQ交流群
+garlicts交流群 329141437
