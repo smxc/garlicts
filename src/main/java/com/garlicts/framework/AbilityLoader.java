@@ -8,6 +8,7 @@ import com.garlicts.framework.ioc.BeanContainerAbility;
 import com.garlicts.framework.ioc.IocAbility;
 import com.garlicts.framework.mvc.ControllerAbility;
 import com.garlicts.framework.plugin.PluginAbility;
+import com.garlicts.framework.security.AccessRightsAbility;
 import com.garlicts.framework.util.ClassUtil;
 
 import org.slf4j.LoggerFactory;
@@ -25,12 +26,13 @@ public final class AbilityLoader {
     public static void init() {
         // 定义需要加载的 Helper 类
         Class<?>[] abilityList = {
-            DatabaseAbility.class,
+//            DatabaseAbility.class,
             ControllerAbility.class,
             BeanContainerAbility.class,
             AopProxyAbility.class,
             PluginAbility.class,
-            IocAbility.class
+            IocAbility.class,
+            AccessRightsAbility.class
         };
         // 按照顺序加载类
         for (Class<?> cls : abilityList) {

@@ -5,6 +5,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.mvc.ViewResolver;
@@ -21,6 +24,8 @@ import com.garlicts.framework.util.WebUtil;
  * @since 1.0
  */
 public class DefaultViewResolver implements ViewResolver {
+	
+	private static final Logger logger = LoggerFactory.getLogger(DefaultViewResolver.class);
 
     @Override
     public void resolveView(HttpServletRequest request, HttpServletResponse response, Object controllerMethodResult) {
@@ -46,7 +51,7 @@ public class DefaultViewResolver implements ViewResolver {
                                 request.setAttribute(entry.getKey(),entry.getValue());
                             }
                         }
-                        System.out.println("view " + view);
+                        logger.info(new StringBuffer("访问的视图为：").append(view).toString());
                         // 转发请求
                         WebUtil.forwardRequest(view, request, response);
                     }                	
@@ -57,21 +62,15 @@ public class DefaultViewResolver implements ViewResolver {
             else if(controllerMethodResult instanceof JsonView) {
                 // 若为 Result，则需考虑两种请求类型（文件上传 或 普通请求）
             	JsonView jsonView = (JsonView) controllerMethodResult;
-//                if (UploadAbility.isMultipart(request)) { //ddd
-//                    // 对于 multipart 类型，说明是文件上传，需要转换为 HTML 格式并写入响应中
-//                    WebUtil.writeHTML(response, jsonView.getModel());
-//                } else {
-//                    // 对于其它类型，统一转换为 JSON 格式并写入响应中
-//                    WebUtil.writeJSON(response, jsonView.getModel());
-//                }
-                
+            	
                 // 对于其它类型，统一转换为 JSON 格式并写入响应中
                 WebUtil.writeJSON(response, jsonView.getModel());
                 
             }
             else{
-            	JsonView jsonView = (JsonView) controllerMethodResult;
-            	WebUtil.writeJSON(response, jsonView);
+            	
+            	throw new RuntimeException("框架不支持的视图类型：" + controllerMethodResult.getClass().getSimpleName());
+            	
             }
             
         }
