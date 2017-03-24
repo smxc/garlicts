@@ -6,10 +6,10 @@ package com.garlicts.framework;
  * @since 1.0
  * @author 水木星辰
  */
-public abstract class InitializeData {
+public interface InitializeData {
 
-	public abstract void init();
+	public void init();
 	
-	public abstract void destroy();
+	public void destroy();
 	
 }
