@@ -6,8 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.garlicts.framework.core.BeanLoaderTemplate;
-
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -31,7 +29,7 @@ public class ProxyManager {
     @SuppressWarnings("unchecked")
     public static <T> T createProxy(final Class<?> targetClass, final List<Proxy> proxyList) {
     	
-    	logger.info(new StringBuffer("创建代理对象：").append(targetClass).toString());
+    	logger.info(new StringBuffer("为委托类 ").append(targetClass.getName()).append(" 创建代理对象").toString());
     	
         return (T) Enhancer.create(targetClass, new MethodInterceptor() {
             @Override

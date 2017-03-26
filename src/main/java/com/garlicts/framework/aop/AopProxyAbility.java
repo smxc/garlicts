@@ -91,7 +91,7 @@ public class AopProxyAbility {
     private static void addAspectProxy(Map<Class<?>, List<Class<?>>> proxyMap) throws Exception {
     	
         // 获取切面类（所有继承于 AspectProxy 的类）
-        List<Class<?>> aspectProxyClassList = beanLoader.getBeanClassListBySuper(basePackage, AspectProxy.class);
+        List<Class<?>> aspectProxyClassList = beanLoader.getBeanClassListBySuper(AspectProxy.class);
 //        List<Class<?>> pluginBeanClassList = beanLoader.getBeanClassListBySuper("com.garlicts.framework.plugin", AspectProxy.class);
 
 //         添加插件包下所有的切面类
@@ -122,7 +122,7 @@ public class AopProxyAbility {
 
     private static void addTransactionProxy(Map<Class<?>, List<Class<?>>> proxyMap) {
         // 使用 TransactionProxy 代理所有 Service 类
-        List<Class<?>> serviceClassList = beanLoader.getBeanClassListByAnnotation(basePackage, Service.class);
+        List<Class<?>> serviceClassList = beanLoader.getBeanClassListByAnnotation(Service.class);
         if(serviceClassList.size() > 0){
         	proxyMap.put(TransactionProxy.class, serviceClassList);
         }
@@ -163,7 +163,7 @@ public class AopProxyAbility {
 //                targetClassList.addAll(beanLoader.getBeanClassListByAnnotation(basePackage, annotation));
 //            }
         	
-        	targetClassList.addAll(beanLoader.getBeanClassListByAnnotation(basePackage, Aspect.class));
+        	targetClassList.addAll(beanLoader.getBeanClassListByAnnotation(Aspect.class));
         	
         }
         return targetClassList;

@@ -3,6 +3,9 @@ package com.garlicts.framework.plugin;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.garlicts.framework.InstanceFactory;
 import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.core.fault.InitializationError;
@@ -15,6 +18,8 @@ import com.garlicts.framework.core.fault.InitializationError;
  */
 public class PluginAbility {
 
+	private static final Logger logger = LoggerFactory.getLogger(PluginAbility.class);
+	
     /**
      * 创建一个插件列表（用于存放插件实例）
      */
@@ -26,7 +31,7 @@ public class PluginAbility {
         try {
         	
             // 获取并遍历所有的插件类（实现了 Plugin 接口的类）
-            List<Class<?>> pluginClassList = beanLoader.getBeanClassListBySuper("com.garlicts.framework.plugin", Plugin.class);
+            List<Class<?>> pluginClassList = beanLoader.getBeanClassListBySuper(Plugin.class);
             for (Class<?> pluginClass : pluginClassList) {
                 // 创建插件实例
                 Plugin plugin = (Plugin) pluginClass.newInstance();
@@ -34,7 +39,7 @@ public class PluginAbility {
                 plugin.init();
                 // 将插件实例添加到插件列表中
                 pluginList.add(plugin);
-                
+                logger.info("初始化插件：" + plugin.getClass().getName());
             }        		
 
         } catch (Exception e) {

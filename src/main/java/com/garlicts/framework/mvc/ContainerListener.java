@@ -42,8 +42,8 @@ public class ContainerListener implements ServletContextListener {
         AbilityLoader.init();
         // 添加 Servlet 映射
         addServletMapping(servletContext);
-        // 注册 WebPlugin
-        registerPlugin(servletContext);
+        // 调用Plugin
+        invokePlugin(servletContext);
         // 调用初始化类
         invokeInitData();
     }
@@ -84,24 +84,10 @@ public class ContainerListener implements ServletContextListener {
         }
     }
 
-    private void registerPlugin(ServletContext servletContext) {
+    private void invokePlugin(ServletContext servletContext) {
         List<Plugin> pluginList = PluginAbility.getPluginList();
         for (Plugin plugin : pluginList) {
-        	
-//        	// web插件
-//            if (plugin instanceof WebPlugin) {
-//                WebPlugin webPlugin = (WebPlugin) plugin;
-//                webPlugin.register(servletContext);
-//            }
-        	
-//            // 分布式插件
-//            else if(plugin instanceof DistributedPlugin){
-//            	DistributedPlugin distributedPlugin = (DistributedPlugin) plugin;
-//            	distributedPlugin.init();
-//            }
-        	
         	plugin.init();
-        	
         }
     }
 
@@ -114,7 +100,7 @@ public class ContainerListener implements ServletContextListener {
     
     @SuppressWarnings(value="all")
     private void invokeInitData(){
-    	List<Class<?>> initDataClassList = beanLoaderTemplate.getBeanClassListBySuper(FrameworkConstant.BASE_PACKAGE, InitializeData.class);
+    	List<Class<?>> initDataClassList = beanLoaderTemplate.getBeanClassListBySuper(InitializeData.class);
     	for(Class<?> cls : initDataClassList){
     		try {
     			Object initInstatnce = BeanContainerAbility.getBean(cls);

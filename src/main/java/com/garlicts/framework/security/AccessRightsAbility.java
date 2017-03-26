@@ -37,12 +37,12 @@ public class AccessRightsAbility {
     /**
      * 获取基础包名
      */
-    private static final String basePackage = PropertiesProvider.getString(FrameworkConstant.BASE_PACKAGE);
+//    private static final String basePackage = PropertiesProvider.getString(FrameworkConstant.BASE_PACKAGE);
     
     static {
         try {
             // 获取应用包路径下所有的类
-        	List<Class<?>> classList = beanLoaderTemplate.getBeanClassListByAnnotation(basePackage, Controller.class);
+        	List<Class<?>> classList = beanLoaderTemplate.getBeanClassListByAnnotation(Controller.class);
         	String key = null;
         	
             for (Class<?> cls : classList) {

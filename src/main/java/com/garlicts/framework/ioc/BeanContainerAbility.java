@@ -1,11 +1,15 @@
 package com.garlicts.framework.ioc;
 
+import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.InitializeData;
@@ -17,6 +21,7 @@ import com.garlicts.framework.core.fault.InitializationError;
 import com.garlicts.framework.ioc.annotation.Bean;
 import com.garlicts.framework.mvc.annotation.Controller;
 import com.garlicts.framework.plugin.Plugin;
+import com.garlicts.framework.plugin.cache.redis.RedisTemplate;
 import com.garlicts.framework.transaction.annotation.Service;
 import com.garlicts.framework.util.ClassUtil;
 
@@ -49,41 +54,26 @@ public class BeanContainerAbility{
         	
             for (Class<?> cls : classList) {
             	
-                // 处理带有 Bean/Service/Controller/Aspect 注解的类
-                if (cls.isAnnotationPresent(Bean.class) || 
-                    cls.isAnnotationPresent(Service.class) || 
-                    cls.isAnnotationPresent(Controller.class) || 
-                    cls.isAnnotationPresent(Aspect.class)) {
-                    // 创建 Bean 实例
-                    Object beanInstance = cls.newInstance();
-                    // 将 Bean 实例放入 Bean Map 中（键为 Bean 类，值为 Bean 实例）
-                    beanMap.put(cls, beanInstance);
-                    
-                    //打印注册的bean
-                    logger.info(new StringBuffer("加载Class[Class | Class的对象]：").append(cls).append(" | ").append(beanInstance).toString());
-                    
-                }
+                // 注册Bean
+            	registerBean(cls);
                 
-                //加载插件
-                if(Plugin.class.isAssignableFrom(cls) && !cls.equals(Plugin.class)){
-                	Object beanInstance = cls.newInstance();
-                	beanMap.put(cls, beanInstance);
-                	logger.info(new StringBuffer("加载插件：").append(cls.getName()).toString());
-                }
-                
-                //加载初始化类
-                if(InitializeData.class.isAssignableFrom(cls) && !cls.equals(InitializeData.class)){
-                	Object initInstance = cls.newInstance();
-                	beanMap.put(cls, initInstance);
-                	logger.info(new StringBuffer("加载初始化类：").append(cls.getName()).toString());
-                }
+                // 注册初始化类
+            	registerInitializeData(cls);
                 
             }
             
-            //创建JdbcTemplate实例，并将JdbcTemplate注册到Bean容器
-            Class<?> jdbcTemplateClass = ClassUtil.loadClass("com.garlicts.framework.dao.JdbcTemplate");
-            Object jdbcTemplateInstance = jdbcTemplateClass.newInstance();
-            beanMap.put(jdbcTemplateClass, jdbcTemplateInstance);
+            if(!basePackage.contains("com.garlicts.framework.plugin")){
+            	
+            	List<Class<?>> pluginList = beanLoaderTemplate.getBeanClassList("com.garlicts.framework.plugin");
+            	for(Class<?> cls : pluginList){
+                    // 注册插件
+                	registerPlugin(cls);
+            	}
+            	
+            }
+            
+            // 注册JdbcTemplate
+            registerJdbcTemplate();
             
         } catch (Exception e) {
             throw new InitializationError("初始化  BeanContainerAbility 出错！");
@@ -120,6 +110,109 @@ public class BeanContainerAbility{
      */
     public static void destroy(){
     	beanMap.clear();
+    }
+    
+    private static void registerJdbcTemplate(){
+    	
+        //创建JdbcTemplate实例，并将JdbcTemplate注册到Bean容器
+        Class<?> jdbcTemplateClass = ClassUtil.loadClass("com.garlicts.framework.dao.JdbcTemplate");
+        Object jdbcTemplateInstance;
+		try {
+			jdbcTemplateInstance = jdbcTemplateClass.newInstance();
+			beanMap.put(jdbcTemplateClass, jdbcTemplateInstance);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+    }
+    
+//    private static void registerRedisTemplate(){
+//    	
+//		//读redis配置  格式为 192.168.8.100
+//		String redisServer = PropertiesProvider.getString(FrameworkConstant.REDIS_SERVER);
+//		JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), redisServer);
+//
+//		//将RedisTemplate注册到Bean容器
+//		Class<?> redisTemplateClass = ClassUtil.loadClass("com.garlicts.framework.plugin.cache.redis.RedisTemplate");
+//		try {
+//			Constructor<?> constructor = redisTemplateClass.getConstructor(JedisPool.class);
+//			RedisTemplate redisTemplate = (RedisTemplate) constructor.newInstance(jedisPool);
+//			BeanContainerAbility.setBean(redisTemplateClass, redisTemplate);
+//			
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}	    
+//		
+//    	
+//    }
+    
+    /**
+     * <p>注册Bean</p>
+     * 扫描带有Bean/Service/Controller/Aspect注解的类，并注册到Bean容器
+     */
+    private static void registerBean(Class<?> cls){
+    	
+        if (cls.isAnnotationPresent(Bean.class) || 
+                cls.isAnnotationPresent(Service.class) || 
+                cls.isAnnotationPresent(Controller.class) || 
+                cls.isAnnotationPresent(Aspect.class)) {
+                // 创建 Bean 实例
+                Object beanInstance;
+				try {
+					
+					beanInstance = cls.newInstance();
+					
+	                // 将 Bean 实例放入 Bean Map 中（键为 Bean 类，值为 Bean 实例）
+	                beanMap.put(cls, beanInstance);
+	                //打印注册的bean
+	                logger.info(new StringBuffer("注册Bean[Class | Class的对象]：").append(cls).append(" | ").append(beanInstance).toString());
+	                
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+            }
+    	
+    }
+    
+    /**
+     * <p>注册插件</p>
+     * 插件都实现Plugin接口 
+     */
+    public static void registerPlugin(Class<?> cls){
+    	
+        if(Plugin.class.isAssignableFrom(cls) && !cls.equals(Plugin.class)){
+        	Object beanInstance;
+			try {
+				beanInstance = cls.newInstance();
+	        	beanMap.put(cls, beanInstance);
+	        	logger.info(new StringBuffer("注册插件：").append(cls.getName()).toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+        }    	
+    	
+    }
+    
+    /**
+     * 注册初始化类 
+     * 初始化类都实现InitializeData接口
+     */
+    public static void registerInitializeData(Class<?> cls){
+    	
+        if(InitializeData.class.isAssignableFrom(cls) && !cls.equals(InitializeData.class)){
+        	Object initInstance;
+			try {
+				initInstance = cls.newInstance();
+	        	beanMap.put(cls, initInstance);
+	        	logger.info(new StringBuffer("注册初始化类：").append(cls.getName()).toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+        }
+        
     }
     
 }

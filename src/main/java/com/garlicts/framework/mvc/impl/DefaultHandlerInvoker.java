@@ -10,21 +10,15 @@ import java.util.regex.Matcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 
-import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.InstanceFactory;
-import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.ioc.BeanContainerAbility;
 import com.garlicts.framework.mvc.GarlictsContext;
 import com.garlicts.framework.mvc.ViewResolver;
-import com.garlicts.framework.mvc.bean.Params;
-import com.garlicts.framework.security.annotation.Role;
 import com.garlicts.framework.util.ClassUtil;
 import com.garlicts.framework.util.ConvertUtil;
-import com.garlicts.framework.util.MapUtil;
-import com.garlicts.framework.util.StringUtil;
 import com.garlicts.framework.util.WebUtil;
 import com.garlicts.framework.mvc.Handler;
 import com.garlicts.framework.mvc.HandlerInvoker;
@@ -37,7 +31,7 @@ import com.garlicts.framework.mvc.HandlerInvoker;
  */
 public class DefaultHandlerInvoker implements HandlerInvoker {
 	
-	private static final Logger logger = LoggerFactory.getLogger(DefaultHandlerInvoker.class);
+//	private static final Logger logger = LoggerFactory.getLogger(DefaultHandlerInvoker.class);
 
     private ViewResolver viewResolver = InstanceFactory.getViewResolver();
 

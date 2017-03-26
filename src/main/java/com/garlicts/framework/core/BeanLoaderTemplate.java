@@ -49,19 +49,15 @@ public class BeanLoaderTemplate{
             
             if(StringUtil.isNotBlank(packageName)){
             	
-            	if(!packageName.contains("com.galicts")){
-            		
-            		customerClassList = getBeanClassListIterate(packageName);
-//                    boolean disjoint = Collections.disjoint(garlictsClassList, customerClassList);
-//                    if(disjoint){
-//                    	garlictsClassList.addAll(customerClassList);
-//                    }else{
-//                    	throw new RuntimeException("自定义Bean和框架内定义的Bean发生了重名");
-//                    }            		
-            		
-            	}else{
-            		throw new RuntimeException("自定义工程的包名与框架包名发生重名");
-            	}
+//            	if(!packageName.contains("com.galicts")){
+//            		
+//            		customerClassList = getBeanClassListIterate(packageName);
+//            		
+//            	}else{
+//            		throw new RuntimeException("自定义工程的包名与框架包名发生重名");
+//            	}
+            	
+            	customerClassList = getBeanClassListIterate(packageName);
             	
             }
 
@@ -185,7 +181,7 @@ public class BeanLoaderTemplate{
 	/**
 	 * 获取包名下带有某注解的所有类 
 	 */
-	public List<Class<?>> getBeanClassListByAnnotation(String packageName, Class<? extends Annotation> annotationClass) {
+	public List<Class<?>> getBeanClassListByAnnotation(Class<? extends Annotation> annotationClass) {
 		
 		List<Class<?>> classList = new ArrayList<Class<?>>();
 		Map<Class<?>,Object> beanMap = BeanContainerAbility.getBeanMap();
@@ -202,7 +198,7 @@ public class BeanLoaderTemplate{
     /**
      * 获取包名下某父类（或接口）的所有子类（或实现类）
      */
-	public List<Class<?>> getBeanClassListBySuper(String packageName, Class<?> superClass) {
+	public List<Class<?>> getBeanClassListBySuper(Class<?> superClass) {
 
         List<Class<?>> classList = new ArrayList<Class<?>>();
         Map<Class<?>, Object> beanMap = BeanContainerAbility.getBeanMap();

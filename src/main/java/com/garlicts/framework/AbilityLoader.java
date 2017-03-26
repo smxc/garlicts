@@ -26,7 +26,7 @@ public final class AbilityLoader {
     public static void init() {
         // 定义需要加载的 Helper 类
         Class<?>[] abilityList = {
-//            DatabaseAbility.class,
+            DatabaseAbility.class,
             ControllerAbility.class,
             BeanContainerAbility.class,
             AopProxyAbility.class,

@@ -33,7 +33,7 @@ public class ControllerAbility {
     /**
      * 获取基础包名
      */
-    private static final String basePackage = PropertiesProvider.getString(FrameworkConstant.BASE_PACKAGE);
+//    private static final String basePackage = PropertiesProvider.getString(FrameworkConstant.BASE_PACKAGE);
     
     /**
      * 获取Bean扫描器
@@ -42,7 +42,7 @@ public class ControllerAbility {
     
     static {
         // 获取所有 控制器 类（类上标记了Controller注解的类）
-        List<Class<?>> controllerClassList = beanLoader.getBeanClassListByAnnotation(basePackage, Controller.class);
+        List<Class<?>> controllerClassList = beanLoader.getBeanClassListByAnnotation(Controller.class);
         if (CollectionUtil.isNotEmpty(controllerClassList)) {
             // 定义两个 Action Map
             Map<Requestor, Handler> commonControllerMap = new HashMap<Requestor, Handler>(); // 存放普通 Controller Map
