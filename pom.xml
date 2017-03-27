@@ -46,18 +46,18 @@
 		</plugins>
 	</build>
 
-<!-- 	<repositories> -->
-<!-- 		<repository> -->
-<!-- 			<id>oss.sonatype.org</id> -->
-<!-- 			<name>OSS Sonatype Staging</name> -->
-<!-- 			<url>https://oss.sonatype.org/content/groups/staging</url> -->
-<!-- 		</repository> -->
-<!-- 		<repository> -->
-<!-- 			<id>jboss</id> -->
-<!-- 			<name>jboss nexus</name> -->
-<!-- 			<url>http://repository.jboss.org/nexus/content/repositories/releases</url> -->
-<!-- 		</repository> -->
-<!-- 	</repositories> -->
+	<repositories>
+		<repository>
+			<id>oss.sonatype.org</id>
+			<name>OSS Sonatype Staging</name>
+			<url>https://oss.sonatype.org/content/groups/staging</url>
+		</repository>
+		<repository>
+			<id>jboss</id>
+			<name>jboss nexus</name>
+			<url>http://repository.jboss.org/nexus/content/repositories/releases</url>
+		</repository>
+	</repositories>
 
 	<dependencies>
 		<!-- servlet jsp jstl -->
