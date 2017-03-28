@@ -8,9 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.InstanceFactory;
-import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.core.fault.InitializationError;
 import com.garlicts.framework.mvc.annotation.Controller;

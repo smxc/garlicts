@@ -1,15 +1,11 @@
 package com.garlicts.framework.ioc;
 
-import java.lang.reflect.Constructor;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig;
 
 import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.InitializeData;
@@ -21,7 +17,6 @@ import com.garlicts.framework.core.fault.InitializationError;
 import com.garlicts.framework.ioc.annotation.Bean;
 import com.garlicts.framework.mvc.annotation.Controller;
 import com.garlicts.framework.plugin.Plugin;
-import com.garlicts.framework.plugin.cache.redis.RedisTemplate;
 import com.garlicts.framework.transaction.annotation.Service;
 import com.garlicts.framework.util.ClassUtil;
 

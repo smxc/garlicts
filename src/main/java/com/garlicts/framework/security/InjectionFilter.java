@@ -2,7 +2,6 @@ package com.garlicts.framework.security;
 
 import java.io.IOException;
 
-import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -15,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@WebFilter(urlPatterns = {"/*"}, dispatcherTypes = DispatcherType.REQUEST)
+@WebFilter(urlPatterns = {"*.jsp","*.do","/services/*"})
 public class InjectionFilter implements Filter {
 
 	private static final Logger logger = LoggerFactory.getLogger(InjectionFilter.class);
@@ -29,9 +28,11 @@ public class InjectionFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		
-		logger.info("进入防注入过滤器：" + InjectionFilter.class.getName());
-		
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+		StringBuffer stringBuffer = new StringBuffer();
+		stringBuffer.append(httpServletRequest.getRequestURI()).append(" 进入防注入过滤器：").append(InjectionFilter.class.getName());
+		logger.info(stringBuffer.toString());
+		
 		InjectionRequestWrapper injectionRequestWrapper = new InjectionRequestWrapper(httpServletRequest);
 		chain.doFilter(injectionRequestWrapper, response);
 		

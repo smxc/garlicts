@@ -21,11 +21,11 @@ import org.slf4j.LoggerFactory;
  * @since 1.0
  * @author 水木星辰
  */
-@WebFilter(urlPatterns={"/*"})
+@WebFilter(urlPatterns={"*.jsp","*.do","/services/*"})
 public class CharacterEncodingFilter implements Filter {
 	
 	private final Logger logger = LoggerFactory.getLogger(CharacterEncodingFilter.class);
-
+	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 	}
@@ -34,10 +34,11 @@ public class CharacterEncodingFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response,
 			FilterChain chain) throws IOException, ServletException {
 		
-		logger.info(new StringBuffer("进入编码过滤器：").append(CharacterEncodingFilter.class.getName()).toString());
-		
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+		StringBuffer stringBuffer = new StringBuffer();
+		stringBuffer.append(httpServletRequest.getRequestURI()).append(" 进入编码过滤器：").append(CharacterEncodingFilter.class.getName());
+		logger.info(stringBuffer.toString());
 		
 		httpServletRequest.setCharacterEncoding("UTF-8");
 		httpServletResponse.setCharacterEncoding("UTF-8");

@@ -1,6 +1,5 @@
 package com.garlicts.framework.mvc.bean;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,7 +21,6 @@ public class JspView extends View {
 
 	public JspView(String view) {
         this.view = view;
-        model = new HashMap<String, Object>();
     }
 
     public boolean isRedirect() {
