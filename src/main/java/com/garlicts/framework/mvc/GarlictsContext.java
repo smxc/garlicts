@@ -46,7 +46,7 @@ public class GarlictsContext {
     }
 
     /**
-     * 获取 DataContext 实例
+     * 获取 GarlictsContext 实例
      */
     public static GarlictsContext getInstance() {
         return threadLocal.get();

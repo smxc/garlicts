@@ -61,19 +61,19 @@ public class ContainerListener implements ServletContextListener {
 
     private void addServletMapping(ServletContext context) {
         // 用 DefaultServlet 映射所有静态资源
-        registerDefaultServlet(context);
+//        registerDefaultServlet(context);
         // 用 JspServlet 映射所有 JSP 请求
         registerJspServlet(context);
     }
 
-    private void registerDefaultServlet(ServletContext context) {
-        ServletRegistration defaultServlet = context.getServletRegistration("default");
-        defaultServlet.addMapping("/index.html", "/favicon.ico");
-        String wwwPath = PropertiesProvider.getString(FrameworkConstant.WWW_PATH);
-        if (StringUtil.isNotEmpty(wwwPath)) {
-            defaultServlet.addMapping(wwwPath + "*");
-        }
-    }
+//    private void registerDefaultServlet(ServletContext context) {
+//        ServletRegistration defaultServlet = context.getServletRegistration("default");
+//        defaultServlet.addMapping("/index.html", "/favicon.ico");
+//        String wwwPath = PropertiesProvider.getString(FrameworkConstant.WWW_PATH);
+//        if (StringUtil.isNotEmpty(wwwPath)) {
+//            defaultServlet.addMapping(wwwPath + "*");
+//        }
+//    }
 
     private void registerJspServlet(ServletContext context) {
         ServletRegistration jspServlet = context.getServletRegistration("jsp");

@@ -39,7 +39,7 @@ public interface FrameworkConstant {
     /**
      * 静态资源存放路径 
      */
-    String WWW_PATH = "garlicts.www.path";
+//    String WWW_PATH = "garlicts.www.path";
     /**
      * 项目首页 
      */

@@ -10,18 +10,18 @@ import java.util.regex.Matcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.garlicts.framework.mvc.HandlerInvoker;
+import com.garlicts.framework.mvc.ViewResolver;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
-
-import com.garlicts.framework.InstanceFactory;
-import com.garlicts.framework.ioc.BeanContainerAbility;
-import com.garlicts.framework.mvc.GarlictsContext;
-import com.garlicts.framework.mvc.ViewResolver;
-import com.garlicts.framework.util.ClassUtil;
+import com.garlicts.framework.mvc.bean.Params;
+import com.garlicts.framework.util.MapUtil;
 import com.garlicts.framework.util.ConvertUtil;
+import com.garlicts.framework.util.ClassUtil;
 import com.garlicts.framework.util.WebUtil;
+import com.garlicts.framework.ioc.BeanContainerAbility;
 import com.garlicts.framework.mvc.Handler;
-import com.garlicts.framework.mvc.HandlerInvoker;
+import com.garlicts.framework.InstanceFactory;
 
 /**
  * 默认 Handler 调用器
@@ -72,13 +72,13 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
 //        }
         
         // 添加普通请求参数列表（包括 Query String 与 Form Data）
-//        Map<String, Object> requestParamMap = WebUtil.getRequestParamMap(request);
-//        if (MapUtil.isNotEmpty(requestParamMap)) {
-//            paramList.add(new Params(requestParamMap));
-//        }
-        
         Map<String, Object> requestParamMap = WebUtil.getRequestParamMap(request);
-        GarlictsContext.Request.put("params", requestParamMap);
+        if (MapUtil.isNotEmpty(requestParamMap)) {
+            paramList.add(new Params(requestParamMap));
+        }
+        
+//        Map<String, Object> requestParamMap = WebUtil.getRequestParamMap(request);
+//        GarlictsContext.Request.put("params", requestParamMap);
         
         // 返回参数列表
         return paramList;
