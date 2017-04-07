@@ -21,7 +21,7 @@ public interface FrameworkConstant {
      * 框架读取的配置文件 
      */ 
     String CONFIG_FILE = "config.properties";
-    String SQL_FILE = "sql.properties";
+//    String SQL_FILE = "sql.properties";
     String BASE_PACKAGE = "garlicts.framework.base_package";    
     
     /**
@@ -57,7 +57,7 @@ public interface FrameworkConstant {
     /**
      * redis服务器ip 
      */
-    String REDIS_SERVER = "garlicts.redis.server";   
+    String REDIS_SERVER = "garlicts.redis.host";   
     
     /**
      * ftp 

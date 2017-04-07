@@ -6,9 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.InstanceFactory;
-import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.mvc.annotation.Controller;
 import com.garlicts.framework.mvc.annotation.RequestMapping;
