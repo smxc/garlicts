@@ -4,6 +4,7 @@ import java.rmi.Naming;
 import java.rmi.Remote;
 import java.rmi.registry.LocateRegistry;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.locks.Lock;
@@ -34,12 +35,38 @@ public class RmiProviderTemplate {
     	logger.debug("发布RMI服务 开始...");
     	_lock.lock();
     	
+    	boolean flag = true;
     	String url = publishService(remote, host, port);  // 发布 RMI 服务并返回 RMI 地址
+    	
     	if(url !=null){
     		ZooKeeper zk = connectServer();   // 连接 ZooKeeper 服务器并获取 ZooKeeper 对象
     		if(zk !=null){
-    			// 创建节点，并将RMI地址放入该节点上，RMI地址格式为"key|url"
-    			createNode(zk, url, key);   
+    			
+    			//判断是否需要创建节点 ddd
+    			try {
+					List<String> nodeList = zk.getChildren(RmiConstant.ZK_PROVIDER_PATH, false);
+		            for (String node : nodeList) {
+		                
+		            	byte[] data = zk.getData(RmiConstant.ZK_PROVIDER_PATH + "/" + node, false, null); // 获取 子节点中的数据
+		                String keyUrl = new String(data).toString();
+		                String[] arr = keyUrl.split("\\|");
+		                String serviceKey = arr[0];
+		                String serviceUrl = arr[1];
+		                
+		                if(serviceKey.equals(key) && serviceUrl.equals(url)){
+		                	flag = false;
+		                }
+		                
+		            }
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+    			
+    			if(flag){
+        			// 创建节点，并将RMI地址放入该节点上，RMI地址格式为"key|url"
+        			createNode(zk, url, key); 
+    			}
+    			
     		}
     		
     	}
@@ -52,7 +79,16 @@ public class RmiProviderTemplate {
     private String publishService(Remote remote, String host, int port){
     	String  url = null;
     	try {
+    		
+//    		//加载使用默认的安全规则
+//    		System.setProperty("java.security.policy", RmiProviderTemplate.class.getResource("rmi.policy").toString());
+//    		if(System.getSecurityManager() == null){
+//    			System.setSecurityManager(new SecurityManager());
+//    		}
+    		
 			url = String.format("rmi://%s:%d/%s", host, port, remote.getClass().getName());
+//			System.setProperty("java.rmi.server.codebase", url);
+			
 			LocateRegistry.createRegistry(port);
 			Naming.rebind(url, remote);
 			logger.debug("发布RMI服务 (url:{})", url);
@@ -77,7 +113,7 @@ public class RmiProviderTemplate {
                 }
             });
             
-            logger.info("链接zookeeper服务器成功！");
+            logger.info("连接zookeeper服务器成功！");
             latch.await(); // 使当前线程在锁存器倒计数至零之前一直等待
             
         } catch (Exception e) {
@@ -114,7 +150,7 @@ public class RmiProviderTemplate {
             
         	byte[] data = (key + "|" + url).getBytes();
         	// 创建一个临时性且有序的zookeeper节点
-            String path = zk.create(RmiConstant.ZK_PROVIDER_PATH + "/", data, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
+            String path = zk.create(RmiConstant.ZK_PROVIDER_PATH + "/", data, ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL);
             logger.debug("发布RMI服务成功，成功创建了节点 path => url ({} => {})", path, url);
         
         } catch (Exception e) {

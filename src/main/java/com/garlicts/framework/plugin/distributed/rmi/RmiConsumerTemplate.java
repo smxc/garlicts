@@ -99,17 +99,21 @@ public class RmiConsumerTemplate {
                 }
             });
             
-            // 用于存放 /registry 所有子节点中的数据
+            // 用于存放所有子节点中的数据
             List<String> dataList = new ArrayList<String>(); 
             for (String node : nodeList) {
-                byte[] data = zk.getData(RmiConstant.ZK_PROVIDER_PATH + "/" + node, false, null); // 获取 /registry 的子节点中的数据
+                byte[] data = zk.getData(RmiConstant.ZK_PROVIDER_PATH + "/" + node, false, null); // 获取 子节点中的数据
                 dataList.add(new String(data));
                 
                 String d = new String(data).toString();
                 String key = d.split("\\|")[0];
                 String url = d.split("\\|")[1];
                 if(dataMap.containsKey(key)){
-                	dataMap.get(key).add(url);
+//                	dataMap.get(key).add(url);
+                	List<String> urlList = dataMap.get(key);
+                	if(!urlList.contains(url)){
+                		urlList.add(url);
+                	}
                 }else{
                 	List<String> list = new ArrayList<String>();
                 	list.add(url);
@@ -139,9 +143,20 @@ public class RmiConsumerTemplate {
             	
             	if(dataMap.containsKey(key)){
             		List<String> urlList = dataMap.get(key);
-            		if(urlList.size() > 0){
-            			return lookupService(urlList.get(0), key);
-            		}
+//            		if(urlList.size() > 0){
+//            			//return lookupService(urlList.get(0), key);
+//            		}
+                	if(urlList.size() > 0){
+                		if(urlList.size() == 1){
+                			return lookupService(urlList.get(0), key);
+                		}else{
+                			return lookupService(urlList.get(ThreadLocalRandom.current().nextInt(urlList.size())), key);
+                		}
+                	}else{
+                		
+                		logger.info("zookeeper没有找到服务：" + key);
+                		
+                	}
             	}
             	
             }

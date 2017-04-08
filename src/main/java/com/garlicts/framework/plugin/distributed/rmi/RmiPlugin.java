@@ -1,9 +1,6 @@
 package com.garlicts.framework.plugin.distributed.rmi;
 
-import org.apache.zookeeper.CreateMode;
-import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
-import org.apache.zookeeper.data.Stat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,30 +27,34 @@ public class RmiPlugin implements Plugin {
 			
 			//创建ZooKeeper根节点
 			ZooKeeper zk = rmiProviderTemplate.connectServer();
-	        if(zk != null){
-	        	
-	        	try {
-					Stat stat = zk.exists(RmiConstant.ZK_ROOT_PATH, false);
-					if(stat == null){
-						String path = zk.create(RmiConstant.ZK_ROOT_PATH, "".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-						logger.info("创建了ZooKeeper根节点 ({})", path);
-					}
-					stat = zk.exists(RmiConstant.ZK_PROVIDER_PATH, false);
-					if(stat == null){
-						String path = zk.create(RmiConstant.ZK_PROVIDER_PATH, "".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
-						logger.info("创建了ZooKeeper子节点 ({})", path);
-					}
-	        	} catch (Exception e) {
-	        		logger.error("创建ZooKeeper节点 /registry/provider 失败");
-					e.printStackTrace();
-				}finally{
-					zk.close();
-				}
-	        	
-	        }  
+//	        if(zk != null){
+//	        	
+//	        	try {
+//					Stat stat = zk.exists(RmiConstant.ZK_ROOT_PATH, false);
+//					if(stat == null){
+//						String path = zk.create(RmiConstant.ZK_ROOT_PATH, "".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+//						logger.info("创建了ZooKeeper根节点 ({})", path);
+//					}
+//					stat = zk.exists(RmiConstant.ZK_PROVIDER_PATH, false);
+//					if(stat == null){
+//						String path = zk.create(RmiConstant.ZK_PROVIDER_PATH, "".getBytes(), ZooDefs.Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+//						logger.info("创建了ZooKeeper子节点 ({})", path);
+//					}
+//	        	} catch (Exception e) {
+//	        		logger.error("创建ZooKeeper节点 /garlicts/provider 失败");
+//					e.printStackTrace();
+//				}finally{
+//					zk.close();
+//				}
+//	        	
+//	        }  
+			
+			if(zk == null){
+				logger.error("创建ZooKeeper节点 /garlicts/provider 失败");
+			}
 			
 		} catch (Exception e) {
-			logger.error("RmiPlugin初始化失败，请检查ZooKeeper是否启动！");
+			logger.error("RmiPlugin初始化失败，请检查ZooKeeper是否已启动！");
 			e.printStackTrace();
 		}		
 		
