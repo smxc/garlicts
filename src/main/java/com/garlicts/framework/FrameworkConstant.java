@@ -62,6 +62,7 @@ public interface FrameworkConstant {
     /**
      * ftp 
      */
+    String FTP_ENABLE = "garlicts.ftp.enable";
     String FTP_HOST = "garlicts.ftp.host";
     String FTP_PORT = "garlicts.ftp.port";
     String FTP_USERNAME = "garlicts.ftp.username";
@@ -70,6 +71,7 @@ public interface FrameworkConstant {
     /**
      * zookeeper 
      */
+    String ZK_ENABLE = "garlicts.zookeeper.enable";
     String ZK_HOST = "garlicts.zookeeper.host";
     String ZK_PORT = "garlicts.zookeeper.port";
     

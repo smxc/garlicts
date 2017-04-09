@@ -30,7 +30,7 @@ public class FtpUploadServlet extends HttpServlet {
 	
 	@Override
 	public void init() throws ServletException {
-		Class<?> ftpTemplateClass = ClassUtil.loadClass("com.garlicts.plugin.distributed.ftp.FtpTemplate");
+		Class<?> ftpTemplateClass = ClassUtil.loadClass("com.garlicts.framework.plugin.upload.ftp.FtpTemplate");
 		ftpTemplate = (FtpTemplate) BeanContainerAbility.getBean(ftpTemplateClass);
 	}
 	
