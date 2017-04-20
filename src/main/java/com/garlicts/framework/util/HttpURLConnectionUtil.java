@@ -58,7 +58,7 @@ public class HttpURLConnectionUtil {
 				
 				//相应数据
 				InputStream inputStream = conn.getInputStream();
-				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 				String str = "";
 				while((str = bufferedReader.readLine()) != null){
 					responseStr.append(str);
