@@ -25,9 +25,14 @@ public class HttpURLConnectionUtil {
     		URL requestUrl = new URL(url);
 			// 建立http连接
     		conn = (HttpURLConnection) requestUrl.openConnection();
+    		
+    		conn.setConnectTimeout(30000);
+    		conn.setReadTimeout(30000);
+    		
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
-			conn.setUseCaches(true);
+			// Post请求不能使用缓存 
+			conn.setUseCaches(false);
 			
 			// 设置请求方法
 			conn.setRequestMethod("POST");
@@ -35,9 +40,11 @@ public class HttpURLConnectionUtil {
 			conn.setRequestProperty("Connection", "Keep-Alive");
 			conn.setRequestProperty("Charset", "UTF-8");
 			
-			byte[] data = jsonStr.getBytes();
-			conn.setRequestProperty("Content-Length", String.valueOf(data.length));
+//			byte[] data = jsonStr.getBytes("UTF-8");
+			conn.setRequestProperty("Content-Length", String.valueOf(jsonStr.length()));
 			
+            // 设定传送的内容类型是可序列化的java对象  
+            // httpUrlConnection.setRequestProperty("Content-type", "application/x-java-serialized-object");  
 			conn.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式
 			conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
 			
@@ -68,7 +75,9 @@ public class HttpURLConnectionUtil {
 				if(null != out){
 					out.close();
 				}
-				conn.disconnect();
+				if(null != conn){
+					conn.disconnect();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
