@@ -8,11 +8,16 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.HttpURLConnection;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * HttpURLConnection http连接
  * @author 水木星辰
  */
 public class HttpURLConnectionUtil {
+	
+	private static final Logger logger = LoggerFactory.getLogger(HttpURLConnectionUtil.class);
 	
     public static String doPost(String url, String jsonStr){
         
@@ -25,9 +30,14 @@ public class HttpURLConnectionUtil {
     		URL requestUrl = new URL(url);
 			// 建立http连接
     		conn = (HttpURLConnection) requestUrl.openConnection();
+    		
+    		conn.setConnectTimeout(30000);
+    		conn.setReadTimeout(30000);
+    		
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
-			conn.setUseCaches(true);
+			// Post请求不能使用缓存 
+			conn.setUseCaches(false);
 			
 			// 设置请求方法
 			conn.setRequestMethod("POST");
@@ -35,9 +45,11 @@ public class HttpURLConnectionUtil {
 			conn.setRequestProperty("Connection", "Keep-Alive");
 			conn.setRequestProperty("Charset", "UTF-8");
 			
-			byte[] data = jsonStr.getBytes();
-			conn.setRequestProperty("Content-Length", String.valueOf(data.length));
+//			byte[] data = jsonStr.getBytes("UTF-8");
+			conn.setRequestProperty("Content-Length", String.valueOf(jsonStr.length()));
 			
+            // 设定传送的内容类型是可序列化的java对象  
+            // httpUrlConnection.setRequestProperty("Content-type", "application/x-java-serialized-object");  
 			conn.setRequestProperty("Content-Type", "application/json"); // 设置发送数据的格式
 			conn.setRequestProperty("Accept", "application/json"); // 设置接收数据的格式
 			
@@ -47,15 +59,24 @@ public class HttpURLConnectionUtil {
 			out.append(jsonStr);
 			out.flush();
 			
+			logger.info("请求URL："  + url);
+			logger.info("请求的JSON报文："  + jsonStr);
+			
 			if(conn.getResponseCode() == 200) {
 				
 				//相应数据
 				InputStream inputStream = conn.getInputStream();
-				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
+				BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 				String str = "";
 				while((str = bufferedReader.readLine()) != null){
 					responseStr.append(str);
 				}
+				
+				logger.info("响应的JSON报文："  + responseStr.toString());
+				
+			}else{
+				
+				logger.info(url + " 请求失败！");
 				
 			}
 			
@@ -68,7 +89,9 @@ public class HttpURLConnectionUtil {
 				if(null != out){
 					out.close();
 				}
-				conn.disconnect();
+				if(null != conn){
+					conn.disconnect();
+				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

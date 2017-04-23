@@ -116,10 +116,15 @@
 			<version>${commons-codec.version}</version>
 		</dependency>
 		<!-- google json -->
+<!-- 		<dependency> -->
+<!-- 			<groupId>com.google.code.gson</groupId> -->
+<!-- 			<artifactId>gson</artifactId> -->
+<!-- 			<version>2.7</version> -->
+<!-- 		</dependency> -->
 		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.7</version>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.31</version>
 		</dependency>
 		<!-- log -->
 		<dependency>
