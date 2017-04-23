@@ -8,16 +8,11 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.HttpURLConnection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * HttpURLConnection http连接
  * @author 水木星辰
  */
 public class HttpURLConnectionUtil {
-	
-	private static final Logger logger = LoggerFactory.getLogger(HttpURLConnectionUtil.class);
 	
     public static String doPost(String url, String jsonStr){
         
@@ -59,9 +54,6 @@ public class HttpURLConnectionUtil {
 			out.append(jsonStr);
 			out.flush();
 			
-			logger.info("请求URL："  + url);
-			logger.info("请求的JSON报文："  + jsonStr);
-			
 			if(conn.getResponseCode() == 200) {
 				
 				//相应数据
@@ -71,12 +63,6 @@ public class HttpURLConnectionUtil {
 				while((str = bufferedReader.readLine()) != null){
 					responseStr.append(str);
 				}
-				
-				logger.info("响应的JSON报文："  + responseStr.toString());
-				
-			}else{
-				
-				logger.info(url + " 请求失败！");
 				
 			}
 			
