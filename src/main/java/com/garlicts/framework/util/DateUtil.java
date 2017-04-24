@@ -1,103 +1,89 @@
 package com.garlicts.framework.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 日期操作工具类
- *
- * @author 水木星辰
- * @since 1.0
+ * SimpleDateFormat非线程安全
+ * @author wangwei
  */
 public class DateUtil {
 
-    private static final Logger logger = LoggerFactory.getLogger(DateUtil.class);
-
-    private static final SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private static final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-
+	private static ThreadLocal<DateFormat> dateFormatThreadLocal = new ThreadLocal<DateFormat>(){
+		
+		@Override
+		protected DateFormat initialValue(){
+			return new SimpleDateFormat("yyyyMMddHHmmss");
+		}
+		
+	};
+	
+	private static ThreadLocal<DateFormat> dbDateFormatThreadLocal = new ThreadLocal<DateFormat>(){
+		
+		@Override
+		protected DateFormat initialValue(){
+			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		}
+		
+	};
+    
     /**
-     * 格式化日期与时间
+     * 转换日期格式
+     * @param 时间字符串  将yyyy-MM-dd HH:mm:ss 转成 yyyyMMddHHmmss
      */
-    public static String formatDatetime(long timestamp) {
-        return datetimeFormat.format(new Date(timestamp));
-    }
+    public static String convert2StandardFormat(String dateTimeStr) {
+    	
+    	DateFormat dbDateFormat = dbDateFormatThreadLocal.get();
+    	DateFormat dateFormat = dateFormatThreadLocal.get();
+    	Date date;
+    	String formatedDateStr = null;
+		try {
+			date = dbDateFormat.parse(dateTimeStr);
+			formatedDateStr = dateFormat.format(date);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		};
+    	
+    	return formatedDateStr;
+    }    
 
     /**
-     * 格式化日期
-     */
-    public static String formatDate(long timestamp) {
-        return dateFormat.format(new Date(timestamp));
-    }
-
-    /**
-     * 格式化时间
-     */
-    public static String formatTime(long timestamp) {
-        return timeFormat.format(new Date(timestamp));
-    }
-
-    /**
-     * 获取当前日期与时间
+     * 获取当前日期与时间  yyyyMMddHHmmss
      */
     public static String getCurrentDatetime() {
+    	DateFormat datetimeFormat = dateFormatThreadLocal.get();
         return datetimeFormat.format(new Date());
     }
-
+    
     /**
-     * 获取当前日期
+     * 获取当前日期与时间 yyyy-MM-dd HH:mm:ss
      */
-    public static String getCurrentDate() {
-        return dateFormat.format(new Date());
-    }
+    public static String getCurrDatetimeWithDbFormat() {
+    	DateFormat dbDateFormat = dbDateFormatThreadLocal.get();
+        return dbDateFormat.format(new Date());
+    }    
 
+    
     /**
-     * 获取当前时间
+     * 生成流水号 
      */
-    public static String getCurrentTime() {
-        return timeFormat.format(new Date());
+    public static String generateTransId(){
+    	String transId = new StringBuffer().append(getCurrentDatetime()).toString();
+    	return transId;
     }
+    
+    public static void main(String[] args) {
+		
+//    	System.out.println(DateUtil.generateTransId());
+    	System.out.println("----------------------------------------------");
+    	System.out.println(DateUtil.convert2StandardFormat("2016-02-02 12:00:01"));
+    	System.out.println("----------------------------------------------");
+//    	System.out.println(DateUtil.getCurrentDatetime());
+//    	System.out.println(DateUtil.getCurrDatetimeWithDbFormat());
+    	
+	}
 
-    /**
-     * 解析日期与时间
-     */
-    public static Date parseDatetime(String str) {
-        Date date = null;
-        try {
-            date = datetimeFormat.parse(str);
-        } catch (ParseException e) {
-            logger.error("解析日期字符串出错！格式：yyyy-MM-dd HH:mm:ss");
-        }
-        return date;
-    }
-
-    /**
-     * 解析日期
-     */
-    public static Date parseDate(String str) {
-        Date date = null;
-        try {
-            date = dateFormat.parse(str);
-        } catch (ParseException e) {
-            logger.error("解析日期字符串出错！格式：yyyy-MM-dd");
-        }
-        return date;
-    }
-
-    /**
-     * 解析时间
-     */
-    public static Date parseTime(String str) {
-        Date date = null;
-        try {
-            date = timeFormat.parse(str);
-        } catch (ParseException e) {
-            logger.error("解析日期字符串出错！格式：HH:mm:ss");
-        }
-        return date;
-    }
 }
