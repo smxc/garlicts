@@ -5,7 +5,6 @@ import java.util.UUID;
 import redis.clients.jedis.Jedis;
 
 import com.garlicts.framework.plugin.cache.redis.JedisTemplate;
-import com.garlicts.framework.util.DateUtil;
 
 /**
  * AccessToken生成器
@@ -27,7 +26,7 @@ public class AccessTokenGenerator {
 		
 	}
 	
-	public static class AccessTokenGeneratorInner{
+	private static class AccessTokenGeneratorInner{
 		private final static AccessTokenGenerator instance = new AccessTokenGenerator();
 	}
 	
@@ -41,22 +40,13 @@ public class AccessTokenGenerator {
 	private String generateAccessToken(){
 
 		Jedis jedis = null;
-		String transId = null;
+		String accessToken = null;
 		
 		try{
 
-			// 当前序列值
-			Long accessTokenSeqValue;
-			String uuid = UUID.randomUUID().toString().replace("-", "");
-			
+			accessToken = UUID.randomUUID().toString().replace("-", "");
 			jedis = JedisTemplate.getJedis();
-			accessTokenSeqValue = jedis.incr("accessTokenSeq");
-			System.out.println("accessTokenSeqValue:" + accessTokenSeqValue);
-//			accessTokenSeqValue = jedis.get("accessTokenSeq");
-			
-			transId = DateUtil.generateTransId() + accessTokenSeqValue;
-	
-			jedis.setex(transId, 60, uuid); // 60秒的超时时间
+			jedis.setex(accessToken, 60, accessToken); // 60秒的超时时间
 		
 		}catch(Exception e){
 			e.printStackTrace();
@@ -64,7 +54,7 @@ public class AccessTokenGenerator {
 			jedis.close();
 		}
 		
-		return transId;
+		return accessToken;
 		
 	}
 	
