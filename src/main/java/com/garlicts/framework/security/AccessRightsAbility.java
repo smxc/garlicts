@@ -12,6 +12,7 @@ import com.garlicts.framework.InstanceFactory;
 import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.core.fault.InitializationError;
 import com.garlicts.framework.mvc.annotation.Controller;
+import com.garlicts.framework.mvc.annotation.RequestMapping;
 import com.garlicts.framework.security.annotation.Role;
 import com.garlicts.framework.util.StringUtil;
 
@@ -54,9 +55,13 @@ public class AccessRightsAbility {
             		if(method.isAnnotationPresent(Role.class)){
                 		Role roleAnnotation = method.getAnnotation(Role.class);
                 		String roleName = roleAnnotation.value();
+                		
+                		RequestMapping requestMappingAnnotation = method.getAnnotation(RequestMapping.class);
+                		String requestMappingValue = requestMappingAnnotation.value();
+                		
                 		if(StringUtil.isNotBlank(roleName)){
-                			key = cls.getName() + "." + method.getName();
-                			setBean(key, roleName);
+                			key = requestMappingValue;
+                			setRights(key, roleName);
                 			logger.info(new StringBuffer("加载权限配置：").append(key).append(" : ").append(roleName).toString());
                 		}
             		}
@@ -80,18 +85,22 @@ public class AccessRightsAbility {
     /**
      * 获取角色名
      */
-    public static String getAccessRights(String methodName) {
-        if (!accessRightsMap.containsKey(methodName)) {
+    public static String getAccessRights(String key) {
+        if (!accessRightsMap.containsKey(key)) {
             throw new RuntimeException("找不到权限配置信息");
         }
-        return accessRightsMap.get(methodName);
+        return accessRightsMap.get(key);
     }
 
     /**
      * 保存控制器的方法名和角色名的对应关系
      */
-    public static void setBean(String methodName, String accessRights) {
+    public static void setRights(String methodName, String accessRights) {
     	accessRightsMap.put(methodName, accessRights);
+    }
+    
+    public static String getRights(String key){
+    	return accessRightsMap.get(key);
     }
     
     /**
