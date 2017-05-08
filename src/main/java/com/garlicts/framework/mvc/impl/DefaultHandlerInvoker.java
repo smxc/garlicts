@@ -2,9 +2,14 @@ package com.garlicts.framework.mvc.impl;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.beanutils.BeanUtils;
 
 import com.garlicts.framework.mvc.HandlerInvoker;
 import com.garlicts.framework.mvc.ViewResolver;
@@ -12,6 +17,7 @@ import com.garlicts.framework.mvc.ViewResolver;
 //import org.slf4j.LoggerFactory;
 import com.garlicts.framework.ioc.BeanContainerAbility;
 import com.garlicts.framework.mvc.Handler;
+import com.garlicts.framework.util.WebUtil;
 import com.garlicts.framework.InstanceFactory;
 
 /**
@@ -32,13 +38,24 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         Class<?> controllerClass = handler.getControllerClass();
         Method controllerMethod = handler.getControllerMethod();
         
+        Map<String, Object> requestParamMap = WebUtil.getRequestParamMap(request);
+        
+        Class<?>[] parameterTypes = controllerMethod.getParameterTypes();
+        List<Object> parameterList = new ArrayList<Object>();
+        for(Class<?> parameterClass : parameterTypes){
+        	Object object = parameterClass.newInstance();
+        	BeanUtils.populate(object, requestParamMap);
+        	parameterList.add(object);
+        }
+        
         Object controllerInstance = BeanContainerAbility.getBean(controllerClass);
         // 创建 Action 方法的参数列表
 //        List<Object> actionMethodParamList = createControllerMethodParamList(request, handler);
         // 检查参数列表是否合法
 //        checkParamList(controllerMethod, actionMethodParamList);
+        
         // 调用 Action 方法
-        Object actionMethodResult = invokeActionMethod(controllerMethod, controllerInstance);
+        Object actionMethodResult = invokeActionMethod(controllerMethod, controllerInstance, parameterList.toArray(new Object[parameterList.size()]));
         // 解析视图
         viewResolver.resolveView(request, response, actionMethodResult);
     }
@@ -98,10 +115,10 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
 //        return paramList;
 //    }
 
-    private Object invokeActionMethod(Method actionMethod, Object actionInstance) throws IllegalAccessException, InvocationTargetException {
+    private Object invokeActionMethod(Method actionMethod, Object actionInstance, Object... params) throws IllegalAccessException, InvocationTargetException {
         // 通过反射调用 Action 方法
         actionMethod.setAccessible(true); // 取消类型安全检测（可提高反射性能）
-        return actionMethod.invoke(actionInstance);
+        return actionMethod.invoke(actionInstance, params);
     }
 
 //    private void checkParamList(Method actionMethod, List<Object> actionMethodParamList) {

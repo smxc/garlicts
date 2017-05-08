@@ -115,33 +115,27 @@
 			<artifactId>commons-codec</artifactId>
 			<version>${commons-codec.version}</version>
 		</dependency>
-		<!-- google json -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>com.google.code.gson</groupId> -->
-<!-- 			<artifactId>gson</artifactId> -->
-<!-- 			<version>2.7</version> -->
-<!-- 		</dependency> -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
 			<version>1.2.31</version>
 		</dependency>
 		<!-- log -->
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.6.1</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.slf4j</groupId> -->
+<!-- 			<artifactId>slf4j-api</artifactId> -->
+<!-- 			<version>1.6.1</version> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.1</version>
 		</dependency>
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.16</version>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>log4j</groupId> -->
+<!-- 			<artifactId>log4j</artifactId> -->
+<!-- 			<version>1.2.16</version> -->
+<!-- 		</dependency> -->
 		<!-- 缓存 -->
 		<dependency>
 			<groupId>redis.clients</groupId>
@@ -149,30 +143,35 @@
 			<version>2.9.0</version>
 		</dependency>
 		<!-- zookeeper服务注册调度 -->
-		<dependency>
-			<groupId>org.apache.zookeeper</groupId>
-			<artifactId>zookeeper</artifactId>
-			<version>3.4.9</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+<!-- 		<dependency> -->
+<!-- 			<groupId>org.apache.zookeeper</groupId> -->
+<!-- 			<artifactId>zookeeper</artifactId> -->
+<!-- 			<version>3.4.9</version> -->
+<!-- 			<exclusions> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.slf4j</groupId> -->
+<!-- 					<artifactId>slf4j-api</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>org.slf4j</groupId> -->
+<!-- 					<artifactId>slf4j-log4j12</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 				<exclusion> -->
+<!-- 					<groupId>log4j</groupId> -->
+<!-- 					<artifactId>log4j</artifactId> -->
+<!-- 				</exclusion> -->
+<!-- 			</exclusions> -->
+<!-- 		</dependency> -->
 		<!-- ftp -->
 		<dependency>
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
 			<version>3.3</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.3</version>
 		</dependency>
 	</dependencies>
 
