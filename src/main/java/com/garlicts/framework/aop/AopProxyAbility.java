@@ -6,12 +6,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.InstanceFactory;
 import com.garlicts.framework.aop.annotation.Aspect;
 import com.garlicts.framework.aop.proxy.Proxy;
 import com.garlicts.framework.aop.proxy.ProxyManager;
-import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.core.fault.InitializationError;
 import com.garlicts.framework.ioc.BeanContainerAbility;
@@ -32,29 +30,20 @@ public class AopProxyAbility {
      * 获取Bean扫描器
      */
     private static final BeanLoaderTemplate beanLoader = InstanceFactory.getBeanLoaderTemplate();
-    /**
-     * 获取基础包名
-     */
-    private static final String basePackage = PropertiesProvider.getString(FrameworkConstant.BASE_PACKAGE);
-    /**
-     * 获取插件包名
-     */
-//    private static final String pluginPackage = PropertiesProvider.getString(FrameworkConstant.PLUGIN_PACKAGE);
 
     static {
         try {
-            // 创建 Proxy Map（用于 存放代理类 与 目标类列表 的映射关系）
+            // 创建 Proxy Map，存放【代理类】与【委托类List】的映射关系
             Map<Class<?>, List<Class<?>>> proxyMap = createProxyMap();
-            // 创建 Target Map（用于 存放目标类 与 代理类列表 的映射关系）
+            // 创建 Target Map，存放【委托类】与【代理类List】的映射关系）
             Map<Class<?>, List<Proxy>> targetMap = createTargetMap(proxyMap);
             // 遍历 Target Map
             for (Map.Entry<Class<?>, List<Proxy>> targetEntry : targetMap.entrySet()) {
-                // 分别获取 map 中的 key 与 value
                 Class<?> targetClass = targetEntry.getKey();
                 List<Proxy> proxyList = targetEntry.getValue();
                 // 创建代理实例
                 Object proxyInstance = ProxyManager.createProxy(targetClass, proxyList);
-                // 用代理实例覆盖目标实例，并放入 Bean 容器中
+                // 用【代理类实例】覆盖【委托类实例】，并放入 Bean 容器中
                 BeanContainerAbility.setBean(targetClass, proxyInstance);
             }
         } catch (Exception e) {
@@ -92,27 +81,14 @@ public class AopProxyAbility {
     	
         // 获取切面类（所有继承于 AspectProxy 的类）
         List<Class<?>> aspectProxyClassList = beanLoader.getBeanClassListBySuper(AspectProxy.class);
-//        List<Class<?>> pluginBeanClassList = beanLoader.getBeanClassListBySuper("com.garlicts.framework.plugin", AspectProxy.class);
-
-//         添加插件包下所有的切面类
-//        if(StringUtil.isNotEmpty(pluginPackage)){
-//        	aspectProxyClassList.addAll();
-//        }
-        	
-//        if(pluginBeanClassList.size() > 0){
-//        	aspectProxyClassList.addAll(pluginBeanClassList);
-//        }
-    	
-        // 排序切面类
-//        sortAspectProxyClassList(aspectProxyClassList);
         
         // 遍历切面类
         for (Class<?> aspectProxyClass : aspectProxyClassList) {
-            // 判断 Aspect 注解是否存在
+            // 判断Aspect注解是否存在
             if (aspectProxyClass.isAnnotationPresent(Aspect.class)) {
-                // 获取 Aspect 注解
+                // 获取Aspect注解
                 Aspect aspect = aspectProxyClass.getAnnotation(Aspect.class);
-                // 创建目标类列表
+                // 创建委托类List（Aspect要切入的委托类）
                 List<Class<?>> targetClassList = createTargetClassList(aspect);
                 // 初始化 Proxy Map
                 proxyMap.put(aspectProxyClass, targetClassList);
@@ -130,7 +106,7 @@ public class AopProxyAbility {
     }
 
     /**
-     * 创建Aspect注解要切入的目标类列表 
+     * 创建Aspect注解要切入的委托类List 
      */
     private static List<Class<?>> createTargetClassList(Aspect aspect) throws Exception {
         List<Class<?>> targetClassList = new ArrayList<Class<?>>();
@@ -145,25 +121,14 @@ public class AopProxyAbility {
                 targetClassList.add(ClassUtil.loadClass(packageName + "." + className, false));
             } else {
             	
-//                // 若注解不为空且不是 Aspect 注解，则添加指定包名下带有该注解的所有类
-//                if (annotation != null && !annotation.equals(Aspect.class)) {
-//                    targetClassList.addAll(beanLoader.getBeanClassListByAnnotation(packageName, annotation));
-//                } else {
-//                    // 否则添加该包名下所有类
-//                    targetClassList.addAll(beanLoader.getBeanClassList(packageName));
-//                }
             	// 添加该包名下所有类
             	targetClassList.addAll(beanLoader.getBeanClassList(packageName));
             	
             }
         } else {
         	
-//            // 若注解不为空且不是 Aspect 注解，则添加应用包名下带有该注解的所有类
-//            if (annotation != null && !annotation.equals(Aspect.class)) {
-//                targetClassList.addAll(beanLoader.getBeanClassListByAnnotation(basePackage, annotation));
-//            }
-        	
-        	targetClassList.addAll(beanLoader.getBeanClassListByAnnotation(Aspect.class));
+//        	targetClassList.addAll(beanLoader.getBeanClassListByAnnotation(Aspect.class));
+        	throw new InitializationError("切面类的packageName不能为空。");
         	
         }
         return targetClassList;
