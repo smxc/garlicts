@@ -5,6 +5,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.List;
+
+import redis.clients.jedis.Jedis;
+
+import com.garlicts.framework.plugin.cache.redis.JedisTemplate;
 
 /**
  * 服务的负载均衡
@@ -12,11 +17,57 @@ import java.net.URLConnection;
  */
 public class ServiceLoadBalancer {
 
+	// 刷新时间，单位为秒
+	private int refreshSeconds = 60;
+	
+	private static ServiceLoadBalancer serviceLoadBalancer = new ServiceLoadBalancer();
+	
+	public ServiceLoadBalancer getInstance(){
+		return serviceLoadBalancer;
+	}
+	
+	/**
+	 * 注册服务
+	 * 将服务URL保存到redis的list集合中
+	 * @param serviceUrl：http://192.168.0.100:8080/工程名 
+	 */
+	public boolean registerService(String serviceUrl){
+		
+		Jedis jedis = JedisTemplate.getJedis();
+		Long len;
+		Long tmp;
+		try{
+			len = jedis.llen("onlineServices");
+			tmp = len;
+			List<String> services = jedis.lrange("onlineServices", 0, -1);
+			if(!services.contains(serviceUrl)){
+				len = jedis.rpush("onlineServices", serviceUrl);
+				if(tmp + 1 == len){
+					return true;
+				}
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			jedis.close();
+		}
+		
+		return false;
+		
+	}
+	
+	/**
+	 * 移除服务 
+	 */
+	public boolean removeService(){
+		return false;
+	}
+	
 	/**
 	 * 判断服务URL是否在线
-	 * serviceUrl：http://192.168.0.100:8080/工程名 
+	 * @param serviceUrl：http://192.168.0.100:8080/工程名 
 	 */
-	private boolean serviceIsOnline(String serviceUrl){
+	public boolean serviceIsOnline(String serviceUrl){
 		
 		HttpURLConnection httpURLConnection = null;
 		try {
@@ -49,6 +100,9 @@ public class ServiceLoadBalancer {
 		return "";
 	}
 	
+	/**
+	 * 检测服务URL是否在线 
+	 */
 	public void checkServiceUrl(){
 		
 	}
