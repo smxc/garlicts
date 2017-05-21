@@ -18,6 +18,7 @@ import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.ioc.BeanContainerAbility;
 import com.garlicts.framework.plugin.Plugin;
 import com.garlicts.framework.plugin.PluginAbility;
+import com.garlicts.framework.plugin.cache.redis.JedisTemplate;
 import com.garlicts.framework.util.StringUtil;
 
 /**
@@ -57,6 +58,8 @@ public class ContainerListener implements ServletContextListener {
         destroyPlugin();
         // 销毁Bean容器
         BeanContainerAbility.destroy();
+        // 关闭redis连接池
+        JedisTemplate.closeJedisPool();
     }
 
     private void addServletMapping(ServletContext context) {

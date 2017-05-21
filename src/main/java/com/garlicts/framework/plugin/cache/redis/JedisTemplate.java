@@ -16,7 +16,7 @@ public class JedisTemplate {
 	private static class JedisInit {
 		
 		private static JedisPool jedisPool = new JedisPool(new JedisPoolConfig(), PropertiesProvider.getString(FrameworkConstant.REDIS_SERVER));
-		
+
 	}
 	
 	public static JedisPool getJedisPool(){
@@ -26,6 +26,10 @@ public class JedisTemplate {
 	public static Jedis getJedis(){
 		Jedis jedis = JedisInit.jedisPool.getResource();
 		return jedis;
+	}
+	
+	public static void closeJedisPool(){
+		getJedisPool().close();
 	}
 	
 	public static void main(String[] args) {

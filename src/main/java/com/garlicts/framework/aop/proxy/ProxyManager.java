@@ -29,7 +29,7 @@ public class ProxyManager {
     @SuppressWarnings("unchecked")
     public static <T> T createProxy(final Class<?> targetClass, final List<Proxy> proxyList) {
     	
-    	logger.info(new StringBuffer("为委托类 ").append(targetClass.getName()).append(" 创建代理对象").toString());
+    	logger.info(new StringBuffer("框架为委托类【").append(targetClass.getName()).append("】创建了代理对象").toString());
     	
         return (T) Enhancer.create(targetClass, new MethodInterceptor() {
             @Override
