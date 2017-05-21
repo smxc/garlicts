@@ -57,6 +57,15 @@ public class DateUtil {
     	DateFormat datetimeFormat = dateFormatThreadLocal.get();
         return datetimeFormat.format(new Date());
     }
+
+	/**
+	 * 将 long 数值转成  date类型
+	 */
+	/*public static Date formatDate(String format, long millSec){
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		Date date = new Date(millSec);
+		return sdf.parse();
+	}*/
     
     /**
      * 获取当前日期与时间 yyyy-MM-dd HH:mm:ss
@@ -74,6 +83,15 @@ public class DateUtil {
     	String transId = new StringBuffer().append(getCurrentDatetime()).toString();
     	return transId;
     }
+
+	/**
+	 * 转化将对应的 日期类型转化成 日期字符串
+	 * @param args
+	 */
+	public static String dateTransStr(String format, Date date){
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+		return sdf.format(date);
+	}
     
     public static void main(String[] args) {
 		
