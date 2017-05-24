@@ -203,6 +203,15 @@ public class StringUtil {
      */
     public static String defaultIfEmpty(String str, String defaultValue) {
         return StringUtil.isEmpty(str) ? defaultValue : str;
-    }    
+    }
+
+    /**
+     * 对于 html 的 特殊字符进行转化
+     */
+    public static String transHtmlCh(String sourceStr){
+        sourceStr = sourceStr.replaceAll("&", "&amp;").replaceAll("<", "&lt;")
+                     .replaceAll(">", "&gt;").replaceAll("\"", "&quot;");
+        return sourceStr;
+    }
 	
 }
