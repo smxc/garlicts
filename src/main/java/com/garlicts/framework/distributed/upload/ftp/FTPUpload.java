@@ -1,4 +1,4 @@
-package com.garlicts.framework.plugin.upload.ftp;
+package com.garlicts.framework.distributed.upload.ftp;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -15,12 +15,29 @@ import org.apache.commons.net.ftp.FTPClientConfig;
 import org.apache.commons.net.ftp.FTPFile;
 import org.apache.commons.net.ftp.FTPReply;
 
-public class FtpTemplate {
-	
-	FtpConstant ftpConstant;
+import com.garlicts.framework.FrameworkConstant;
+import com.garlicts.framework.config.PropertiesProvider;
 
-	public FtpTemplate(FtpConstant ftpConstant) {
-		this.ftpConstant = ftpConstant;
+public class FTPUpload {
+	
+	FTPConstant ftpConstant;
+
+	public FTPUpload() {
+		
+		String ftpHost = PropertiesProvider.getString(FrameworkConstant.FTP_HOST);
+		String ftpPort = PropertiesProvider.getString(FrameworkConstant.FTP_PORT, "21");
+		String ftpUsername = PropertiesProvider.getString(FrameworkConstant.FTP_USERNAME);
+		String ftpPassword = PropertiesProvider.getString(FrameworkConstant.FTP_PASSWORD);
+		ftpConstant = new FTPConstant();
+		ftpConstant.setHost(ftpHost);
+		ftpConstant.setPort(Integer.parseInt(ftpPort));
+		ftpConstant.setUsername(ftpUsername);
+		ftpConstant.setPassword(ftpPassword);
+		
+	}
+	
+	public static FTPUpload getInstance(){
+		return new FTPUpload();
 	}
 
 	private FTPClient ftpClient = null;

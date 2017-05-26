@@ -15,10 +15,10 @@ import com.garlicts.framework.InitializeData;
 import com.garlicts.framework.InstanceFactory;
 import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.core.BeanLoaderTemplate;
+import com.garlicts.framework.distributed.redis.JedisTemplate;
 import com.garlicts.framework.ioc.BeanContainerAbility;
 import com.garlicts.framework.plugin.Plugin;
 import com.garlicts.framework.plugin.PluginAbility;
-import com.garlicts.framework.plugin.cache.redis.JedisTemplate;
 import com.garlicts.framework.util.StringUtil;
 
 /**

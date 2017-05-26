@@ -1,4 +1,4 @@
-package com.garlicts.framework.plugin.upload.ftp;
+package com.garlicts.framework.distributed.upload.ftp;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -22,25 +22,22 @@ import com.garlicts.framework.util.JsonUtil;
 @WebServlet(name="ftpUploadServlet",urlPatterns="/ftpUploadServlet", loadOnStartup=2)
 //使用注解@MultipartConfig将一个Servlet标识为支持文件上传
 @MultipartConfig
-public class FtpUploadServlet extends HttpServlet {
+public class FTPUploadServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = -3402583385900605439L;
-
-	FtpTemplate ftpTemplate;
-	
-	@Override
-	public void init() throws ServletException {
-		Class<?> ftpTemplateClass = ClassUtil.loadClass("com.garlicts.framework.plugin.upload.ftp.FtpTemplate");
-		ftpTemplate = (FtpTemplate) BeanContainerAbility.getBean(ftpTemplateClass);
-	}
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 		
 			Map<String, String> ret = null;
+			FTPUpload ftpUpload = null;
 			
             //获取所有的文件上传域
             Collection<Part> parts = request.getParts();
+            
+            if(parts.size() > 0){
+            	ftpUpload = FTPUpload.getInstance();
+            }
             
             //上传单个文件
             if (parts.size()==1) {
@@ -55,7 +52,8 @@ public class FtpUploadServlet extends HttpServlet {
                 String filename = generateFilename(header);
                 
                 try {
-					ret = ftpTemplate.uploadFile(filename, part.getInputStream());
+                	
+					ret = ftpUpload.uploadFile(filename, part.getInputStream());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -70,7 +68,7 @@ public class FtpUploadServlet extends HttpServlet {
                     String filename = generateFilename(header);
                     
                     try {
-						ret = ftpTemplate.uploadFile(filename, part.getInputStream());
+						ret = ftpUpload.uploadFile(filename, part.getInputStream());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

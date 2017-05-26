@@ -1,10 +1,12 @@
 package com.garlicts.framework.security;
 
-import com.garlicts.framework.plugin.cache.redis.JedisTemplate;
+import com.garlicts.framework.distributed.redis.JedisTemplate;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.servlet.http.HttpServletRequest;
+
 import java.util.Date;
 
 /**

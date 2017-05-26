@@ -4,7 +4,7 @@ import java.util.UUID;
 
 import redis.clients.jedis.Jedis;
 
-import com.garlicts.framework.plugin.cache.redis.JedisTemplate;
+import com.garlicts.framework.distributed.redis.JedisTemplate;
 
 /**
  * AccessToken生成器

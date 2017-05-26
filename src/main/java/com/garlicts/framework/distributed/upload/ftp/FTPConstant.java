@@ -1,9 +1,9 @@
-package com.garlicts.framework.plugin.upload.ftp;
+package com.garlicts.framework.distributed.upload.ftp;
 
 /**
  * FTP常量
  */
-public class FtpConstant {
+public class FTPConstant {
 	
 	private String host; //FTP主机ip
 	private Integer port; //FTP端口：默认21

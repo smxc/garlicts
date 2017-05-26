@@ -1,4 +1,4 @@
-package com.garlicts.framework.plugin.cache.redis;
+package com.garlicts.framework.distributed.redis;
 
 import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.config.PropertiesProvider;
