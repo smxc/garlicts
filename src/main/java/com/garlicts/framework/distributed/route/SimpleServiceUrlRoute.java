@@ -1,4 +1,4 @@
-package com.garlicts.framework.distributed;
+package com.garlicts.framework.distributed.route;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -14,18 +14,18 @@ import com.garlicts.framework.distributed.redis.JedisTemplate;
 import redis.clients.jedis.Jedis;
 
 /**
- * 服务的负载均衡
+ * 服务的负载均衡器
  * @author 水木星辰 
  */
-public class ServiceLoadBalancer {
+public class SimpleServiceUrlRoute {
 	
-	Logger logger = LoggerFactory.getLogger(ServiceLoadBalancer.class);
+	Logger logger = LoggerFactory.getLogger(SimpleServiceUrlRoute.class);
 
 	private String onlineServices = "onlineServices"; // 保存在线service的redis集合名称
 	
-	private static ServiceLoadBalancer serviceLoadBalancer = new ServiceLoadBalancer();
+	private static SimpleServiceUrlRoute serviceLoadBalancer = new SimpleServiceUrlRoute();
 	
-	public ServiceLoadBalancer getInstance(){
+	public SimpleServiceUrlRoute getInstance(){
 		return serviceLoadBalancer;
 	}
 	
