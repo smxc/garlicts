@@ -2,12 +2,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
 	<modelVersion>4.0.0</modelVersion>
-
 	<groupId>com.garlicts</groupId>
 	<artifactId>garlicts-core</artifactId>
-	<version>0.0.1</version>
+	<version>0.0.1-SNAPSHOT</version>
 
 	<licenses>
 		<license>
@@ -64,22 +62,52 @@
 
 	<repositories>
 		<repository>
-			<id>uk</id>
+			<id>apache.maven</id>
 			<name>uk maven</name>
 			<url>http://uk.maven.org/maven2/</url>
-		</repository>	
+		</repository>
 		<repository>
-			<id>oss.sonatype.org</id>
+			<id>sonatype.maven</id>
 			<name>OSS Sonatype Staging</name>
 			<url>https://oss.sonatype.org/content/groups/staging</url>
 		</repository>
 		<repository>
-			<id>jboss</id>
+			<id>jboss.maven</id>
 			<name>jboss nexus</name>
 			<url>http://repository.jboss.org/nexus/content/repositories/releases</url>
 		</repository>
 	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>apache.plugin</id>
+			<name>uk maven</name>
+			<url>http://uk.maven.org/maven2/</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>sonatype.plugin</id>
+			<name>OSS Sonatype Staging</name>
+			<url>https://oss.sonatype.org/content/groups/staging</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>jboss.plugin</id>
+			<name>jboss nexus</name>
+			<url>http://repository.jboss.org/nexus/content/repositories/releases</url>
+		</pluginRepository>
+	</pluginRepositories>
 
+	<distributionManagement>
+		<repository>
+			<id>releases</id>
+			<name>nexus-releases</name>
+			<url>http://118.244.196.24:8081/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>nexus-snapshots</name>
+			<url>http://118.244.196.24:8081/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
 	<dependencies>
 		<!-- servlet jsp jstl -->
 		<dependency>
@@ -142,21 +170,21 @@
 			<version>1.2.31</version>
 		</dependency>
 		<!-- log -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.slf4j</groupId> -->
-<!-- 			<artifactId>slf4j-api</artifactId> -->
-<!-- 			<version>1.6.1</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.slf4j</groupId> -->
+		<!-- <artifactId>slf4j-api</artifactId> -->
+		<!-- <version>1.6.1</version> -->
+		<!-- </dependency> -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.1</version>
 		</dependency>
-<!-- 		<dependency> -->
-<!-- 			<groupId>log4j</groupId> -->
-<!-- 			<artifactId>log4j</artifactId> -->
-<!-- 			<version>1.2.16</version> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>log4j</groupId> -->
+		<!-- <artifactId>log4j</artifactId> -->
+		<!-- <version>1.2.16</version> -->
+		<!-- </dependency> -->
 		<!-- 缓存 -->
 		<dependency>
 			<groupId>redis.clients</groupId>
@@ -164,25 +192,25 @@
 			<version>2.9.0</version>
 		</dependency>
 		<!-- zookeeper服务注册调度 -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.apache.zookeeper</groupId> -->
-<!-- 			<artifactId>zookeeper</artifactId> -->
-<!-- 			<version>3.4.9</version> -->
-<!-- 			<exclusions> -->
-<!-- 				<exclusion> -->
-<!-- 					<groupId>org.slf4j</groupId> -->
-<!-- 					<artifactId>slf4j-api</artifactId> -->
-<!-- 				</exclusion> -->
-<!-- 				<exclusion> -->
-<!-- 					<groupId>org.slf4j</groupId> -->
-<!-- 					<artifactId>slf4j-log4j12</artifactId> -->
-<!-- 				</exclusion> -->
-<!-- 				<exclusion> -->
-<!-- 					<groupId>log4j</groupId> -->
-<!-- 					<artifactId>log4j</artifactId> -->
-<!-- 				</exclusion> -->
-<!-- 			</exclusions> -->
-<!-- 		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.apache.zookeeper</groupId> -->
+		<!-- <artifactId>zookeeper</artifactId> -->
+		<!-- <version>3.4.9</version> -->
+		<!-- <exclusions> -->
+		<!-- <exclusion> -->
+		<!-- <groupId>org.slf4j</groupId> -->
+		<!-- <artifactId>slf4j-api</artifactId> -->
+		<!-- </exclusion> -->
+		<!-- <exclusion> -->
+		<!-- <groupId>org.slf4j</groupId> -->
+		<!-- <artifactId>slf4j-log4j12</artifactId> -->
+		<!-- </exclusion> -->
+		<!-- <exclusion> -->
+		<!-- <groupId>log4j</groupId> -->
+		<!-- <artifactId>log4j</artifactId> -->
+		<!-- </exclusion> -->
+		<!-- </exclusions> -->
+		<!-- </dependency> -->
 		<!-- ftp -->
 		<dependency>
 			<groupId>commons-net</groupId>
