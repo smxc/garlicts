@@ -45,20 +45,17 @@ public class DefaultViewResolver implements ViewResolver {
                         // 获取路径
                     	String view = PropertiesProvider.getString(FrameworkConstant.JSP_PATH) + jspView.getView();
                         // 初始化请求属性
-                        Object model = jspView.getModel();
-//                        if (MapUtil.isNotEmpty(model)) {
-//                            for (Map.Entry<String, Object> entry : model.entrySet()) {
-//                                request.setAttribute(entry.getKey(),entry.getValue());
-//                            }
-//                        }
-                      
-	                      if (model != null) {
-	                    	  request.setAttribute("model",model);
-		                  }
+                        Map<String,Object> model = jspView.getModel();
+                        if (MapUtil.isNotEmpty(model)) {
+                            for (Map.Entry<String, Object> entry : model.entrySet()) {
+                                request.setAttribute(entry.getKey(),entry.getValue());
+                            }
+                        }
                         
-	                      logger.info(new StringBuffer("访问的视图为：").append(view).toString());
-	                      // 转发请求
-	                      WebUtil.forwardRequest(view, request, response);
+                        logger.info(new StringBuilder("访问的视图为：").append(view).toString());
+	                    // 转发请求
+                        WebUtil.forwardRequest(view, request, response);
+                        
                     }                	
                 	
                 }

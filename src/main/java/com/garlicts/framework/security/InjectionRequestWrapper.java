@@ -18,32 +18,32 @@ public class InjectionRequestWrapper extends HttpServletRequestWrapper {
 		super(request);
 	}
 	
-	public String[] getParameterValues(String name){
-		
-		String[] values = super.getParameterValues(name);
-		if(values == null){
-			return null;
-		}
-		
-		String[] filteredValues = new String[values.length];
-		for(int i = 0; i< values.length; i++){
-			filteredValues[i] = injectionFilter(values[i]);
-		}
-		
-		return filteredValues;
-		
-	}
+//	public String[] getParameterValues(String name){
+//		
+//		String[] values = super.getParameterValues(name);
+//		if(values == null){
+//			return null;
+//		}
+//		
+//		String[] filteredValues = new String[values.length];
+//		for(int i = 0; i< values.length; i++){
+//			filteredValues[i] = injectionFilter(values[i]);
+//		}
+//		
+//		return filteredValues;
+//		
+//	}
 	
-	public String getParameter(String name){
-		
-		String value = super.getParameter(name);
-		if(value == null){
-			return null;
-		}
-		
-		return injectionFilter(value);
-		
-	}
+//	public String getParameter(String name){
+//		
+//		String value = super.getParameter(name);
+//		if(value == null){
+//			return null;
+//		}
+//		
+//		return injectionFilter(value);
+//		
+//	}
 	
 	public String getHeader(String name){
 		
@@ -65,9 +65,6 @@ public class InjectionRequestWrapper extends HttpServletRequestWrapper {
 		str = str.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 		str = str.replaceAll("'", "&#39;");
 		str = str.replaceAll("\\(", "&#40;").replaceAll("\\)", "&#41;");
-		str = str.replaceAll("eval\\((.*)\\)", "");
-//		str = str.replaceAll("[\\\"\\\'][\\s]*javascript:(.*)[\\\"\\\']", "\"\"");
-		str = str.replaceAll("script", "");
 		
 		return str;
 		

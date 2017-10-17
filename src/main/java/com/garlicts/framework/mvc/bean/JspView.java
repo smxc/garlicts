@@ -1,5 +1,7 @@
 package com.garlicts.framework.mvc.bean;
 
+import java.util.Map;
+
 /**
  * JSP模型视图
  *
@@ -9,7 +11,7 @@ package com.garlicts.framework.mvc.bean;
 public class JspView implements View {
 	
 	private String view;          // 视图路径
-    private Object model; // 相关数据
+    private Map<String,Object> model; // 相关数据
     
     public JspView() {
 		super();
@@ -31,11 +33,11 @@ public class JspView implements View {
         this.view = view;
     }
 
-	public Object getModel() {
+	public Map<String, Object> getModel() {
 		return model;
 	}
 
-	public void setModel(Object model) {
+	public void setModel(Map<String, Object> model) {
 		this.model = model;
 	}
     
