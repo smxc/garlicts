@@ -30,7 +30,7 @@ public abstract class AspectProxy implements Proxy {
         if(isTrue){
         	result = proxyChain.doProxyChain();
         }else{
-        	StringBuffer stringBuffer = new StringBuffer("切面【").append(targetClass).append("#").append(targetMethod.getName()).append("】被AOP能力组件拦截，原因是：befor方法返回值为false。");
+        	StringBuffer stringBuffer = new StringBuffer("切面[").append(targetClass).append("#").append(targetMethod.getName()).append("]被AOP组件拦截，原因是：befor方法返回值为false。");
         	logger.warn(stringBuffer.toString());
         }
         after(targetClass, targetMethod, methodParams, result);

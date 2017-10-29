@@ -42,10 +42,20 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         
         Class<?>[] parameterTypes = controllerMethod.getParameterTypes();
         List<Object> parameterList = new ArrayList<Object>();
+        Object object;
         for(Class<?> parameterClass : parameterTypes){
-        	Object object = parameterClass.newInstance();
-        	BeanUtils.populate(object, requestParamMap);
+        	
+        	if(parameterClass.isAssignableFrom(HttpServletRequest.class)){
+        		object = request;
+        	}else if(parameterClass.isAssignableFrom(HttpServletResponse.class)){
+        		object = response;
+        	}else{
+        		object = parameterClass.newInstance();
+        		BeanUtils.populate(object, requestParamMap);
+        	}
+        	
         	parameterList.add(object);
+        	
         }
         
         Object controllerInstance = BeanContainerAbility.getBean(controllerClass);
@@ -58,6 +68,7 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         Object actionMethodResult = invokeActionMethod(controllerMethod, controllerInstance, parameterList.toArray(new Object[parameterList.size()]));
         // 解析视图
         viewResolver.resolveView(request, response, actionMethodResult);
+        
     }
 
 //    public List<Object> createControllerMethodParamList(HttpServletRequest request, Handler handler) throws Exception {

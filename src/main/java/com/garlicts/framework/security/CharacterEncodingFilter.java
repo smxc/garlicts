@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
  * @since 1.0
  * @author 水木星辰
  */
-@WebFilter(urlPatterns={"*.jsp","*.do","/services/*"})
+//@WebFilter(urlPatterns={"*.jsp","*.do","/services/*"}, asyncSupported=true)
 public class CharacterEncodingFilter implements Filter {
 	
 	private final Logger logger = LoggerFactory.getLogger(CharacterEncodingFilter.class);

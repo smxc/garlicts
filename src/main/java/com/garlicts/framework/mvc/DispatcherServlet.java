@@ -1,6 +1,7 @@
 package com.garlicts.framework.mvc;
 
 import java.io.IOException;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -8,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.InstanceFactory;
@@ -20,15 +24,18 @@ import com.garlicts.framework.util.WebUtil;
  * @author 水木星辰
  * @since 1.0
  */
-@WebServlet(urlPatterns = {"*.do", "/services/*"}, loadOnStartup = 0)
+@WebServlet(urlPatterns={"*.do", "/services/"}, loadOnStartup=0)
 public class DispatcherServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 4955762961302934566L;
+	
+//	private static final Logger LOGGER = LoggerFactory.getLogger(DispatcherServlet.class);
 
     private HandlerMapping handlerMapping = InstanceFactory.getHandlerMapping();
     private HandlerInvoker handlerInvoker = InstanceFactory.getHandlerInvoker();
 //    private HandlerExceptionResolver handlerExceptionResolver = InstanceFactory.getHandlerExceptionResolver();
-
+    ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(10);
+    
     @Override
     public void init(ServletConfig config) throws ServletException {
         // 初始化相关配置

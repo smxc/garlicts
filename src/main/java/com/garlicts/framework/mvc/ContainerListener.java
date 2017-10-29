@@ -70,20 +70,21 @@ public class ContainerListener implements ServletContextListener {
     }
 
 //    private void registerDefaultServlet(ServletContext context) {
-//        ServletRegistration defaultServlet = context.getServletRegistration("default");
-//        defaultServlet.addMapping("/index.html", "/favicon.ico");
+//        ServletRegistration servletRegistration = context.getServletRegistration("default");
+//        servletRegistration.addMapping("/index.html");
+//        servletRegistration.addMapping("/favicon.ico");
 //        String wwwPath = PropertiesProvider.getString(FrameworkConstant.WWW_PATH);
 //        if (StringUtil.isNotEmpty(wwwPath)) {
-//            defaultServlet.addMapping(wwwPath + "*");
+//        	servletRegistration.addMapping(wwwPath + "*");
 //        }
 //    }
 
     private void registerJspServlet(ServletContext context) {
-        ServletRegistration jspServlet = context.getServletRegistration("jsp");
-        jspServlet.addMapping("/index.jsp");
+        ServletRegistration servletRegistration = context.getServletRegistration("jsp");
+        servletRegistration.addMapping("/index.jsp");
         String jspPath = PropertiesProvider.getString(FrameworkConstant.JSP_PATH);
         if (StringUtil.isNotEmpty(jspPath)) {
-            jspServlet.addMapping(jspPath + "*");
+        	servletRegistration.addMapping(jspPath + "*");
         }
     }
 

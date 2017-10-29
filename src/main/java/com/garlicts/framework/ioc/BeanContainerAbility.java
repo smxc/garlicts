@@ -160,7 +160,7 @@ public class BeanContainerAbility{
 	                // 将 Bean 实例放入 Bean Map 中（键为 Bean 类，值为 Bean 实例）
 	                beanMap.put(cls, beanInstance);
 	                //打印注册的bean
-	                logger.info(new StringBuffer("注册Bean[Class | Class的对象]：").append(cls).append(" | ").append(beanInstance).toString());
+	                logger.info(new StringBuffer("注册Bean[").append(cls.getName()).append("]").toString());
 	                
 				} catch (Exception e) {
 					e.printStackTrace();
