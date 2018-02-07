@@ -1,5 +1,10 @@
 package com.garlicts.framework.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -213,5 +218,122 @@ public class StringUtil {
                      .replaceAll(">", "&gt;").replaceAll("\"", "&quot;");
         return sourceStr;
     }
+	
+	/**
+	 * Tokenize the given String into a String array via a StringTokenizer.
+	 * Trims tokens and omits empty tokens.
+	 * <p>The given delimiters string is supposed to consist of any number of
+	 * delimiter characters. Each of those characters can be used to separate
+	 * tokens. A delimiter is always a single character; for multi-character
+	 * delimiters, consider using {@code delimitedListToStringArray}
+	 * @param str the String to tokenize
+	 * @param delimiters the delimiter characters, assembled as String
+	 * (each of those characters is individually considered as delimiter).
+	 * @return an array of the tokens
+	 * @see java.util.StringTokenizer
+	 * @see String#trim()
+	 * @see #delimitedListToStringArray
+	 */
+	public static String[] tokenizeToStringArray(String str, String delimiters) {
+		return tokenizeToStringArray(str, delimiters, true, true);
+	}
+	
+	/**
+	 * Tokenize the given String into a String array via a StringTokenizer.
+	 * <p>The given delimiters string is supposed to consist of any number of
+	 * delimiter characters. Each of those characters can be used to separate
+	 * tokens. A delimiter is always a single character; for multi-character
+	 * delimiters, consider using {@code delimitedListToStringArray}
+	 * @param str the String to tokenize
+	 * @param delimiters the delimiter characters, assembled as String
+	 * (each of those characters is individually considered as delimiter)
+	 * @param trimTokens trim the tokens via String's {@code trim}
+	 * @param ignoreEmptyTokens omit empty tokens from the result array
+	 * (only applies to tokens that are empty after trimming; StringTokenizer
+	 * will not consider subsequent delimiters as token in the first place).
+	 * @return an array of the tokens ({@code null} if the input String
+	 * was {@code null})
+	 * @see java.util.StringTokenizer
+	 * @see String#trim()
+	 * @see #delimitedListToStringArray
+	 */
+	public static String[] tokenizeToStringArray(
+			String str, String delimiters, boolean trimTokens, boolean ignoreEmptyTokens) {
+
+		if (str == null) {
+			return null;
+		}
+		StringTokenizer st = new StringTokenizer(str, delimiters);
+		List<String> tokens = new ArrayList<String>();
+		while (st.hasMoreTokens()) {
+			String token = st.nextToken();
+			if (trimTokens) {
+				token = token.trim();
+			}
+			if (!ignoreEmptyTokens || token.length() > 0) {
+				tokens.add(token);
+			}
+		}
+		return toStringArray(tokens);
+	}
+	
+	/**
+	 * Copy the given Collection into a String array.
+	 * The Collection must contain String elements only.
+	 * @param collection the Collection to copy
+	 * @return the String array ({@code null} if the passed-in
+	 * Collection was {@code null})
+	 */
+	public static String[] toStringArray(Collection<String> collection) {
+		if (collection == null) {
+			return null;
+		}
+		return collection.toArray(new String[collection.size()]);
+	}
+    
+	/**
+	 * Convenience method to return a Collection as a CSV String.
+	 * E.g. useful for {@code toString()} implementations.
+	 * @param coll the Collection to display
+	 * @return the delimited String
+	 */
+	public static String collectionToCommaDelimitedString(Collection<?> coll) {
+		return collectionToDelimitedString(coll, ",");
+	}
+	
+	/**
+	 * Convenience method to return a Collection as a delimited (e.g. CSV)
+	 * String. E.g. useful for {@code toString()} implementations.
+	 * @param coll the Collection to display
+	 * @param delim the delimiter to use (probably a ",")
+	 * @return the delimited String
+	 */
+	public static String collectionToDelimitedString(Collection<?> coll, String delim) {
+		return collectionToDelimitedString(coll, delim, "", "");
+	}
+	
+	/**
+	 * Convenience method to return a Collection as a delimited (e.g. CSV)
+	 * String. E.g. useful for {@code toString()} implementations.
+	 * @param coll the Collection to display
+	 * @param delim the delimiter to use (probably a ",")
+	 * @param prefix the String to start each element with
+	 * @param suffix the String to end each element with
+	 * @return the delimited String
+	 */
+	public static String collectionToDelimitedString(Collection<?> coll, String delim, String prefix, String suffix) {
+		if (CollectionUtil.isEmpty(coll)) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		Iterator<?> it = coll.iterator();
+		while (it.hasNext()) {
+			sb.append(prefix).append(it.next()).append(suffix);
+			if (it.hasNext()) {
+				sb.append(delim);
+			}
+		}
+		return sb.toString();
+	}	
 	
 }
