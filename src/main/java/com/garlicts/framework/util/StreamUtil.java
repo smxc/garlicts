@@ -1,9 +1,13 @@
 package com.garlicts.framework.util;
 
 import java.io.BufferedReader;
+import java.io.FilterInputStream;
+import java.io.FilterOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +21,8 @@ public class StreamUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(StreamUtil.class);
 
+    public static final int BUFFER_SIZE = 4096;
+    
     /**
      * 将输入流复制到输出流
      */
@@ -58,4 +64,93 @@ public class StreamUtil {
         }
         return sb.toString();
     }
+    
+	/**
+	 * Copy the contents of the given InputStream to the given OutputStream.
+	 * Leaves both streams open when done.
+	 * @param in the InputStream to copy from
+	 * @param out the OutputStream to copy to
+	 * @return the number of bytes copied
+	 * @throws IOException in case of I/O errors
+	 */
+	public static int copy(InputStream in, OutputStream out) throws IOException {
+		Assert.notNull(in, "No InputStream specified");
+		Assert.notNull(out, "No OutputStream specified");
+		int byteCount = 0;
+		byte[] buffer = new byte[BUFFER_SIZE];
+		int bytesRead = -1;
+		while ((bytesRead = in.read(buffer)) != -1) {
+			out.write(buffer, 0, bytesRead);
+			byteCount += bytesRead;
+		}
+		out.flush();
+		return byteCount;
+	}    
+	
+	/**
+	 * Returns a variant of the given {@link InputStream} where calling
+	 * {@link InputStream#close() close()} has no effect.
+	 * @param in the InputStream to decorate
+	 * @return a version of the InputStream that ignores calls to close
+	 */
+	public static InputStream nonClosing(InputStream in) {
+		Assert.notNull(in, "No InputStream specified");
+		return new NonClosingInputStream(in);
+	}
+
+	/**
+	 * Returns a variant of the given {@link OutputStream} where calling
+	 * {@link OutputStream#close() close()} has no effect.
+	 * @param out the OutputStream to decorate
+	 * @return a version of the OutputStream that ignores calls to close
+	 */
+	public static OutputStream nonClosing(OutputStream out) {
+		Assert.notNull(out, "No OutputStream specified");
+		return new NonClosingOutputStream(out);
+	}
+
+
+	private static class NonClosingInputStream extends FilterInputStream {
+
+		public NonClosingInputStream(InputStream in) {
+			super(in);
+		}
+
+		@Override
+		public void close() throws IOException {
+		}
+	}
+
+
+	private static class NonClosingOutputStream extends FilterOutputStream {
+
+		public NonClosingOutputStream(OutputStream out) {
+			super(out);
+		}
+
+		@Override
+		public void write(byte[] b, int off, int let) throws IOException {
+			// It is critical that we override this method for performance
+			out.write(b, off, let);
+		}
+
+		@Override
+		public void close() throws IOException {
+		}
+		
+	}	
+	
+	/**
+	 * Copy the contents of the given byte array to the given OutputStream.
+	 * Leaves the stream open when done.
+	 * @param in the byte array to copy from
+	 * @param out the OutputStream to copy to
+	 * @throws IOException in case of I/O errors
+	 */
+	public static void copy(byte[] in, OutputStream out) throws IOException {
+		Assert.notNull(in, "No input byte array specified");
+		Assert.notNull(out, "No OutputStream specified");
+		out.write(in);
+	}	
+    
 }

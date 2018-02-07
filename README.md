@@ -1,4 +1,4 @@
-### garlicts框架的调整计划 
+### garlicts框架的开发计划 
 
 1. 集成zookeeper，实现分布式服务注册发现
 2. 完善http请求工厂类，zookeeper + http工厂类 实现分布式http服务。
