@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.charset.Charset;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -152,5 +155,41 @@ public class StreamUtil {
 		Assert.notNull(out, "No OutputStream specified");
 		out.write(in);
 	}	
+	
+	/**
+	 * Copy the contents of the given InputStream into a String.
+	 * Leaves the stream open when done.
+	 * @param in the InputStream to copy from
+	 * @return the String that has been copied to
+	 * @throws IOException in case of I/O errors
+	 */
+	public static String copyToString(InputStream in, Charset charset) throws IOException {
+		Assert.notNull(in, "No InputStream specified");
+		StringBuilder out = new StringBuilder();
+		InputStreamReader reader = new InputStreamReader(in, charset);
+		char[] buffer = new char[BUFFER_SIZE];
+		int bytesRead = -1;
+		while ((bytesRead = reader.read(buffer)) != -1) {
+			out.append(buffer, 0, bytesRead);
+		}
+		return out.toString();
+	}	
+	
+	/**
+	 * Copy the contents of the given String to the given output OutputStream.
+	 * Leaves the stream open when done.
+	 * @param in the String to copy from
+	 * @param charset the Charset
+	 * @param out the OutputStream to copy to
+	 * @throws IOException in case of I/O errors
+	 */
+	public static void copy(String in, Charset charset, OutputStream out) throws IOException {
+		Assert.notNull(in, "No input String specified");
+		Assert.notNull(charset, "No charset specified");
+		Assert.notNull(out, "No OutputStream specified");
+		Writer writer = new OutputStreamWriter(out, charset);
+		writer.write(in);
+		writer.flush();
+	}
     
 }
