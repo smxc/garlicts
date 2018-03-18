@@ -70,6 +70,8 @@ public class BeanContainerAbility{
             // 注册JdbcTemplate
             registerJdbcTemplate();
             
+            registerHtmlUnitCrawler();
+            
         } catch (Exception e) {
             throw new InitializationError("初始化  BeanContainerAbility 出错！");
         }
@@ -208,6 +210,19 @@ public class BeanContainerAbility{
 
         }
         
+    }
+    
+    public static void registerHtmlUnitCrawler(){
+    	
+        Class<?> jdbcTemplateClass = ClassUtil.loadClass("com.garlicts.framework.crawler.htmlunit.HtmlUnitCrawler");
+        Object jdbcTemplateInstance;
+		try {
+			jdbcTemplateInstance = jdbcTemplateClass.newInstance();
+			beanMap.put(jdbcTemplateClass, jdbcTemplateInstance);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
     }
     
 }
