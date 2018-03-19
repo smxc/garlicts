@@ -6,9 +6,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.InstanceFactory;
+import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.core.BeanLoaderTemplate;
+import com.garlicts.framework.distributed.zookeeper.HttpService;
+import com.garlicts.framework.distributed.zookeeper.HttpServiceProvider;
 import com.garlicts.framework.mvc.annotation.Controller;
+import com.garlicts.framework.mvc.annotation.RemoteHttpService;
 import com.garlicts.framework.mvc.annotation.RequestMapping;
 import com.garlicts.framework.mvc.annotation.RequestMethod;
 import com.garlicts.framework.util.ArrayUtil;
@@ -71,6 +76,13 @@ public class ControllerAbility {
 			for(RequestMethod e : requestMethod){
 				putActionMap(e.name(), requestPath, controllerClass, controllerMethod, commonControllerMap, regexpControllerMap);
 			}
+			
+			if(controllerMethod.isAnnotationPresent(RemoteHttpService.class)){
+				String serviceName = controllerMethod.getAnnotation(RemoteHttpService.class).serviceName();
+				new HttpServiceProvider().publish(requestPath, serviceName, 
+						PropertiesProvider.getString(FrameworkConstant.HTTP_SERVICE_HOST), PropertiesProvider.getInt(FrameworkConstant.HTTP_SERVICE_PORT));
+			}
+			
 		}
     	
     }

@@ -73,7 +73,12 @@ public interface FrameworkConstant {
      * zookeeper 
      */
     String ZK_ENABLE = "garlicts.zookeeper.enable";
-    String ZK_HOST = "garlicts.zookeeper.host";
-    String ZK_PORT = "garlicts.zookeeper.port";
+    String ZK_CONNECTION_STRING = "garlicts.zookeeper.connection.url";
+	int ZK_SESSION_TIMEOUT = 5000;
+	String ZK_ROOT_PATH = "/garlicts";
+	String ZK_HTTP_PROVIDER_PATH = ZK_ROOT_PATH + "/HttpProvider";
+	
+	String HTTP_SERVICE_HOST = "garlicts.http.service.host";
+	String HTTP_SERVICE_PORT = "garlicts.http.service.port";
     
 }

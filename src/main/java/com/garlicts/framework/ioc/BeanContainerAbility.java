@@ -14,6 +14,7 @@ import com.garlicts.framework.aop.annotation.Aspect;
 import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.core.fault.InitializationError;
+import com.garlicts.framework.distributed.zookeeper.HttpServiceProvider;
 import com.garlicts.framework.ioc.annotation.Bean;
 import com.garlicts.framework.mvc.annotation.Controller;
 import com.garlicts.framework.plugin.Plugin;
