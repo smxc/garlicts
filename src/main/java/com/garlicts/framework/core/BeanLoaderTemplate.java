@@ -16,7 +16,7 @@ import java.util.jar.JarFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.garlicts.framework.ioc.BeanContainerAbility;
+import com.garlicts.framework.ioc.BeanContainerComponent;
 import com.garlicts.framework.util.ClassUtil;
 import com.garlicts.framework.util.StringUtil;
 
@@ -184,7 +184,7 @@ public class BeanLoaderTemplate{
 	public List<Class<?>> getBeanClassListByAnnotation(Class<? extends Annotation> annotationClass) {
 		
 		List<Class<?>> classList = new ArrayList<Class<?>>();
-		Map<Class<?>,Object> beanMap = BeanContainerAbility.getBeanMap();
+		Map<Class<?>,Object> beanMap = BeanContainerComponent.getBeanMap();
 		
         for (Class<?> cls : beanMap.keySet()) {
             if (cls.isAnnotationPresent(annotationClass)) {
@@ -201,7 +201,7 @@ public class BeanLoaderTemplate{
 	public List<Class<?>> getBeanClassListBySuper(Class<?> superClass) {
 
         List<Class<?>> classList = new ArrayList<Class<?>>();
-        Map<Class<?>, Object> beanMap = BeanContainerAbility.getBeanMap();
+        Map<Class<?>, Object> beanMap = BeanContainerComponent.getBeanMap();
         
         for(Class<?> cls : beanMap.keySet()){
         	

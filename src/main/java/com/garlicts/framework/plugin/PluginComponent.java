@@ -16,9 +16,9 @@ import com.garlicts.framework.core.fault.InitializationError;
  * @author 水木星辰
  * @since 1.0
  */
-public class PluginAbility {
+public class PluginComponent {
 
-	private static final Logger logger = LoggerFactory.getLogger(PluginAbility.class);
+	private static final Logger logger = LoggerFactory.getLogger(PluginComponent.class);
 	
     /**
      * 创建一个插件列表（用于存放插件实例）

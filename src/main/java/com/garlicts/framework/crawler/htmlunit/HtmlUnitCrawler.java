@@ -2,6 +2,8 @@ package com.garlicts.framework.crawler.htmlunit;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -11,6 +13,8 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.WebResponse;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
+import com.garlicts.framework.util.MapUtil;
 import com.garlicts.framework.util.StringUtil;
 
 public abstract class HtmlUnitCrawler {
@@ -49,20 +53,23 @@ public abstract class HtmlUnitCrawler {
 		try {
 			WebRequest webRequest = buildWebRequest(crawlerHttpRequest);
 			htmlPage = webClient.getPage(webRequest);
+			
+			WebResponse webResponse = htmlPage.getWebResponse();
+			int statusCode = webResponse.getStatusCode();
+			if(statusCode != 200){
+				StringBuilder logStr = new StringBuilder();
+				logStr.append("爬取url[").append(url).append("]失败，http status code is ").append(statusCode);
+				LOGGER.error(logStr.toString());
+			}
+			
+			List<HtmlTableRow> list = crawlData(htmlPage, key);
+			saveData(list);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			webClientPool.returnObject(webClient);
 		}
-		WebResponse webResponse = htmlPage.getWebResponse();
-		int statusCode = webResponse.getStatusCode();
-		if(statusCode != 200){
-			StringBuilder logStr = new StringBuilder();
-			logStr.append("爬取url[").append(url).append("]失败，http status code is ").append(statusCode);
-			LOGGER.error(logStr.toString());
-		}
-		
-		handle(htmlPage, key);
-		
-		webClientPool.returnObject(webClient);
 		
 	}
 	
@@ -70,6 +77,13 @@ public abstract class HtmlUnitCrawler {
 		
 		String url = crawlerHttpRequest.getUrl();
 		Map<String,String> additionalHeaders = crawlerHttpRequest.getAdditionalHeaders();
+		if(MapUtil.isEmpty(additionalHeaders)){
+			
+			additionalHeaders = new HashMap<String,String>();
+			additionalHeaders.put("accept-language", "zh-CN,zh;q=0.8");
+			
+		}
+		
 		String proxyAddress = crawlerHttpRequest.getProxyAddress();
 		
 		URL link;
@@ -95,8 +109,10 @@ public abstract class HtmlUnitCrawler {
 		}
 		
 		return webRequest;
-	}	
+	}
 	
-	public abstract void handle(HtmlPage htmlPage, String key);
+	public abstract List<HtmlTableRow> crawlData(HtmlPage htmlPage, String key);
+	
+	public abstract boolean saveData(List<HtmlTableRow> list);
 	
 }

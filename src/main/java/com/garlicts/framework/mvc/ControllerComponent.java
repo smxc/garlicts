@@ -26,7 +26,7 @@ import com.garlicts.framework.util.StringUtil;
  * @author 水木星辰
  * @since 1.0
  */
-public class ControllerAbility {
+public class ControllerComponent {
 
     /**
      * Action Map（HTTP 请求与 Action 方法的映射）

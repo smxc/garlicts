@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.garlicts.framework.mvc.ControllerAbility;
+import com.garlicts.framework.mvc.ControllerComponent;
 import com.garlicts.framework.mvc.Handler;
 import com.garlicts.framework.mvc.HandlerMapping;
 import com.garlicts.framework.mvc.Requestor;
@@ -22,7 +22,7 @@ public class DefaultHandlerMapping implements HandlerMapping {
         // 定义一个 Handler
         Handler handler = null;
         // 获取并遍历 Action 映射
-        Map<Requestor, Handler> controllerMap = ControllerAbility.getControllerMap();
+        Map<Requestor, Handler> controllerMap = ControllerComponent.getControllerMap();
         for (Map.Entry<Requestor, Handler> controllerEntry : controllerMap.entrySet()) {
             // 从 Requestor 中获取 Request 相关属性
             Requestor requestor = controllerEntry.getKey();

@@ -12,7 +12,7 @@ import com.garlicts.framework.aop.proxy.Proxy;
 import com.garlicts.framework.aop.proxy.ProxyManager;
 import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.core.fault.InitializationError;
-import com.garlicts.framework.ioc.BeanContainerAbility;
+import com.garlicts.framework.ioc.BeanContainerComponent;
 import com.garlicts.framework.transaction.TransactionProxy;
 import com.garlicts.framework.transaction.annotation.Service;
 import com.garlicts.framework.util.ClassUtil;
@@ -24,7 +24,7 @@ import com.garlicts.framework.util.StringUtil;
  * @author 水木星辰
  * @since 1.0
  */
-public class AopProxyAbility {
+public class AopProxyComponent {
 
     /**
      * 获取Bean扫描器
@@ -44,7 +44,7 @@ public class AopProxyAbility {
                 // 创建代理实例
                 Object proxyInstance = ProxyManager.createProxy(targetClass, proxyList);
                 // 用【代理类实例】覆盖【委托类实例】，并放入 Bean 容器中
-                BeanContainerAbility.setBean(targetClass, proxyInstance);
+                BeanContainerComponent.setBean(targetClass, proxyInstance);
             }
         } catch (Exception e) {
             throw new InitializationError("初始化 AopProxyAbility 出错！");

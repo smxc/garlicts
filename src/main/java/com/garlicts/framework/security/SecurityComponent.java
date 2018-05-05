@@ -22,9 +22,9 @@ import com.garlicts.framework.util.StringUtil;
  * @since 1.0
  * @author 水木星辰
  */
-public class AccessRightsAbility {
+public class SecurityComponent {
 
-	private static final Logger logger = LoggerFactory.getLogger(AccessRightsAbility.class);
+	private static final Logger logger = LoggerFactory.getLogger(SecurityComponent.class);
 
 	private static final BeanLoaderTemplate beanLoaderTemplate = InstanceFactory.getBeanLoaderTemplate();
 	

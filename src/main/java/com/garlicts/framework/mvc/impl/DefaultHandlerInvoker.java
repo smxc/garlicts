@@ -15,7 +15,7 @@ import com.garlicts.framework.mvc.HandlerInvoker;
 import com.garlicts.framework.mvc.ViewResolver;
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
-import com.garlicts.framework.ioc.BeanContainerAbility;
+import com.garlicts.framework.ioc.BeanContainerComponent;
 import com.garlicts.framework.mvc.Handler;
 import com.garlicts.framework.util.WebUtil;
 import com.garlicts.framework.InstanceFactory;
@@ -58,7 +58,7 @@ public class DefaultHandlerInvoker implements HandlerInvoker {
         	
         }
         
-        Object controllerInstance = BeanContainerAbility.getBean(controllerClass);
+        Object controllerInstance = BeanContainerComponent.getBean(controllerClass);
         // 创建 Action 方法的参数列表
 //        List<Object> actionMethodParamList = createControllerMethodParamList(request, handler);
         // 检查参数列表是否合法

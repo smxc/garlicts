@@ -27,9 +27,9 @@ import com.garlicts.framework.util.ClassUtil;
  * @author 水木星辰
  * @since 1.0
  */
-public class BeanContainerAbility{
+public class BeanContainerComponent{
 	
-	private static final Logger logger = LoggerFactory.getLogger(BeanContainerAbility.class);
+	private static final Logger logger = LoggerFactory.getLogger(BeanContainerComponent.class);
 
 	private static final BeanLoaderTemplate beanLoaderTemplate = InstanceFactory.getBeanLoaderTemplate();
 	
@@ -71,7 +71,7 @@ public class BeanContainerAbility{
             // 注册JdbcTemplate
             registerJdbcTemplate();
             
-            registerHtmlUnitCrawler();
+//            registerHtmlUnitCrawler();
             
         } catch (Exception e) {
             throw new InitializationError("初始化  BeanContainerAbility 出错！");
@@ -213,17 +213,17 @@ public class BeanContainerAbility{
         
     }
     
-    public static void registerHtmlUnitCrawler(){
-    	
-        Class<?> jdbcTemplateClass = ClassUtil.loadClass("com.garlicts.framework.crawler.htmlunit.HtmlUnitCrawler");
-        Object jdbcTemplateInstance;
-		try {
-			jdbcTemplateInstance = jdbcTemplateClass.newInstance();
-			beanMap.put(jdbcTemplateClass, jdbcTemplateInstance);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-    	
-    }
+//    public static void registerHtmlUnitCrawler(){
+//    	
+//        Class<?> jdbcTemplateClass = ClassUtil.loadClass("com.garlicts.framework.crawler.htmlunit.HtmlUnitCrawler");
+//        Object jdbcTemplateInstance;
+//		try {
+//			jdbcTemplateInstance = jdbcTemplateClass.newInstance();
+//			beanMap.put(jdbcTemplateClass, jdbcTemplateInstance);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//    	
+//    }
     
 }

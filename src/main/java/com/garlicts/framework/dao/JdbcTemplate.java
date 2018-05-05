@@ -1,9 +1,5 @@
 package com.garlicts.framework.dao;
 
-import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +20,6 @@ import org.apache.commons.dbutils.handlers.ScalarHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.garlicts.framework.util.ArrayUtil;
-
 /**
  * 默认数据访问器
  * <br/>
@@ -33,6 +27,9 @@ import com.garlicts.framework.util.ArrayUtil;
  *
  * @author 水木星辰
  * @since 1.0
+ * 
+ * common-dbutils
+ * http://wallimn.iteye.com/blog/1606930
  */
 public class JdbcTemplate {
 
@@ -41,17 +38,17 @@ public class JdbcTemplate {
     private final QueryRunner queryRunner;
 
     public JdbcTemplate() {
-        DataSource dataSource = DatabaseAbility.getDataSource();
+        DataSource dataSource = DatabaseComponent.getDataSource();
         queryRunner = new QueryRunner(dataSource);
     }
 
     /**
      * 查询对应的实体，返回单条记录
      */
-    public <T> T queryEntity(Class<T> entityClass, String sql, Object... params) {
+    public <T> T queryOne(String sql, Object[] params, Class<T> resultClass) {
         T result;
         try {
-        	result = queryRunner.query(sql, new BeanHandler<T>(entityClass), params);
+        	result = queryRunner.query(sql, new BeanHandler<T>(resultClass), params);
         } catch (SQLException e) {
             logger.error("查询出错！");
             throw new RuntimeException(e);
@@ -63,10 +60,10 @@ public class JdbcTemplate {
     /**
      * 查询对应的实体列表，返回多条记录
      */
-    public <T> List<T> queryEntityList(Class<T> entityClass, String sql, Object... params) {
+    public <T> List<T> queryList(String sql, Object[] params, Class<T> resultClass) {
         List<T> result;
         try {
-        	result = queryRunner.query(sql, new BeanListHandler<T>(entityClass), params);
+        	result = queryRunner.query(sql, new BeanListHandler<T>(resultClass), params);
         } catch (SQLException e) {
             logger.error("查询出错！");
             throw new RuntimeException(e);
@@ -75,22 +72,7 @@ public class JdbcTemplate {
         return result;
     }
 
-    /**
-     * 查询对应的实体列表，返回单条记录（主键 => 实体）
-     */
-    public <K, V> Map<K, V> queryEntityMap(Class<V> entityClass, String sql, Object... params) {
-        Map<K, V> entityMap;
-        try {
-            entityMap = queryRunner.query(sql, new BeanMapHandler<K, V>(entityClass), params);
-        } catch (SQLException e) {
-            logger.error("查询出错！");
-            throw new RuntimeException(e);
-        }
-        printSQL(sql);
-        return entityMap;
-    }
-
-    public Object[] queryArray(String sql, Object... params) {
+    public Object[] queryArray(String sql, Object[] params) {
         Object[] array;
         try {
             array = queryRunner.query(sql, new ArrayHandler(), params);
@@ -102,10 +84,7 @@ public class JdbcTemplate {
         return array;
     }
 
-    /**
-     * 查询对应的数据，返回单条记录
-     */
-    public List<Object[]> queryArrayList(String sql, Object... params) {
+    public List<Object[]> queryArrayList(String sql, Object[] params) {
         List<Object[]> arrayList;
         try {
             arrayList = queryRunner.query(sql, new ArrayListHandler(), params);
@@ -117,10 +96,19 @@ public class JdbcTemplate {
         return arrayList;
     }
 
-    /**
-     * 查询对应的数据，返回单条记录（列名 => 数据）
-     */
-    public Map<String, Object> queryMap(String sql, Object... params) {
+    public <K, V> Map<K, V> queryMap(String sql, Object[] params, Class<V> resultClass) {
+        Map<K, V> result;
+        try {
+        	result = queryRunner.query(sql, new BeanMapHandler<K, V>(resultClass), params);
+        } catch (SQLException e) {
+            logger.error("查询出错！");
+            throw new RuntimeException(e);
+        }
+        printSQL(sql);
+        return result;
+    }
+    
+    public Map<String, Object> queryMap(String sql, Object[] params) {
         Map<String, Object> map;
         try {
             map = queryRunner.query(sql, new MapHandler(), params);
@@ -130,36 +118,36 @@ public class JdbcTemplate {
         }
         printSQL(sql);
         return map;
-    }
-
+    }    
+    
     /**
      * 查询对应的数据，返回多条记录（列名 => 数据）
      */
     public List<Map<String, Object>> queryMapList(String sql, Object... params) {
-        List<Map<String, Object>> fieldMapList;
+        List<Map<String, Object>> result;
         try {
-            fieldMapList = queryRunner.query(sql, new MapListHandler(), params);
+        	result = queryRunner.query(sql, new MapListHandler(), params);
         } catch (SQLException e) {
             logger.error("查询出错！");
             throw new RuntimeException(e);
         }
         printSQL(sql);
-        return fieldMapList;
+        return result;
     }
 
     /**
      * 查询对应的数据，返回单条数据（列名 => 数据）
      */
-    public <T> T queryColumn(String sql, Object... params) {
-        T entity;
+    public <T> T queryColumn(String sql, Object[] params) {
+        T result;
         try {
-            entity = queryRunner.query(sql, new ScalarHandler<T>(), params);
+        	result = queryRunner.query(sql, new ScalarHandler<T>(), params);
         } catch (SQLException e) {
             logger.error("查询出错！");
             throw new RuntimeException(e);
         }
         printSQL(sql);
-        return entity;
+        return result;
     }
 
     /**
@@ -195,7 +183,7 @@ public class JdbcTemplate {
     /**
      * 查询记录条数，返回总记录数
      */
-    public long queryCount(String sql, Object... params) {
+    public long queryCount(String sql, Object[] params) {
         long result;
         try {
             result = queryRunner.query(sql, new ScalarHandler<Long>("count(*)"), params);
@@ -210,11 +198,10 @@ public class JdbcTemplate {
     /**
      * 执行更新操作（包括：update、insert、delete），返回所更新的记录数
      */
-    public int update(String sql, Object... params) {
+    public int update(String sql, Object[] params) {
         int result;
         try {
-            Connection conn = DatabaseAbility.getConnection();
-            result = queryRunner.update(conn, sql, params);
+            result = queryRunner.update(sql, params);
         } catch (SQLException e) {
             logger.error("更新出错！");
             throw new RuntimeException(e);
@@ -224,34 +211,60 @@ public class JdbcTemplate {
     }
 
     /**
-     * 插入一条记录，返回插入后的主键
+     * 插入 
      */
-    public Serializable insertReturnPK(String sql, Object... params) {
-        Serializable key = null;
-        try {
-            Connection conn = DatabaseAbility.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
-            if (ArrayUtil.isNotEmpty(params)) {
-                for (int i = 0; i < params.length; i++) {
-                    pstmt.setObject(i + 1, params[i]);
-                }
-            }
-            int rows = pstmt.executeUpdate();
-            if (rows == 1) {
-                ResultSet rs = pstmt.getGeneratedKeys();
-                if (rs.next()) {
-                    key = (Serializable) rs.getObject(1);
-                }
-            }
-        } catch (SQLException e) {
-            logger.error("插入出错！");
-            throw new RuntimeException(e);
-        }
-        printSQL(sql);
-        return key;
+    public int insert(String sql, Object[] params){
+    	
+    	int affectedRows = 0;
+    	
+    	try {
+			affectedRows = queryRunner.update(sql, params);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return affectedRows;
+    	
     }
-
+    
+    /**
+     * 批量插入或更新
+     */
+    public int[] batchInsertOrUpdate(String sql, Object[][] params){
+    	
+    	int[] affectedRows = new int[0];
+    	
+    	try {
+    		affectedRows = queryRunner.batch(sql, params);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
+    	return affectedRows;
+    	
+    }
+    
     private static void printSQL(String sql) {
         logger.info(sql);
     }
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.garlicts.framework.aop.proxy.Proxy;
 import com.garlicts.framework.aop.proxy.ProxyChain;
-import com.garlicts.framework.dao.DatabaseAbility;
+import com.garlicts.framework.dao.DatabaseComponent;
 import com.garlicts.framework.transaction.annotation.Transaction;
 
 /**
@@ -43,16 +43,16 @@ public class TransactionProxy implements Proxy {
         	threadLocal.set(true);
             try {
                 // 开启事务
-                DatabaseAbility.beginTransaction();
+                DatabaseComponent.beginTransaction();
                 logger.info("开启事务");
                 // 执行目标方法
                 result = proxyChain.doProxyChain();
                 // 提交事务
-                DatabaseAbility.commitTransaction();
+                DatabaseComponent.commitTransaction();
                 logger.info("提交事务");
             } catch (Exception e) {
                 // 回滚事务
-                DatabaseAbility.rollbackTransaction();
+                DatabaseComponent.rollbackTransaction();
                 logger.info("回滚事务");
                 throw e;
             } finally {

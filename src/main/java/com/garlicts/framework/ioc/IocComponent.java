@@ -13,12 +13,12 @@ import com.garlicts.framework.util.ArrayUtil;
  * @author 水木星辰
  * @since 1.0
  */
-public class IocAbility {
+public class IocComponent {
 
     static {
         try {
             // 获取并遍历所有的 Bean 类
-            Map<Class<?>, Object> beanMap = BeanContainerAbility.getBeanMap();
+            Map<Class<?>, Object> beanMap = BeanContainerComponent.getBeanMap();
             for (Map.Entry<Class<?>, Object> beanEntry : beanMap.entrySet()) {
                 // 获取 Bean 类与 Bean 实例
                 Class<?> beanClass = beanEntry.getKey();

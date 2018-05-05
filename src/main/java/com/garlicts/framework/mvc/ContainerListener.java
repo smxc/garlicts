@@ -9,15 +9,15 @@ import javax.servlet.ServletContextListener;
 import javax.servlet.ServletRegistration;
 import javax.servlet.annotation.WebListener;
 
-import com.garlicts.framework.AbilityLoader;
+import com.garlicts.framework.ComponentLoader;
 import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.InitializeData;
 import com.garlicts.framework.InstanceFactory;
 import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.core.BeanLoaderTemplate;
-import com.garlicts.framework.ioc.BeanContainerAbility;
+import com.garlicts.framework.ioc.BeanContainerComponent;
 import com.garlicts.framework.plugin.Plugin;
-import com.garlicts.framework.plugin.PluginAbility;
+import com.garlicts.framework.plugin.PluginComponent;
 import com.garlicts.framework.util.StringUtil;
 
 /**
@@ -39,7 +39,7 @@ public class ContainerListener implements ServletContextListener {
         // 获取 ServletContext
         ServletContext servletContext = sce.getServletContext();
         // 初始化所有能力
-        AbilityLoader.init();
+        ComponentLoader.init();
         // 添加 Servlet 映射
         addServletMapping(servletContext);
         // 调用Plugin
@@ -56,7 +56,7 @@ public class ContainerListener implements ServletContextListener {
         // 销毁插件
         destroyPlugin();
         // 销毁Bean容器
-        BeanContainerAbility.destroy();
+        BeanContainerComponent.destroy();
         // 关闭redis连接池
 //        JedisTemplate.closeJedisPool();
     }
@@ -88,14 +88,14 @@ public class ContainerListener implements ServletContextListener {
     }
 
     private void invokePlugin(ServletContext servletContext) {
-        List<Plugin> pluginList = PluginAbility.getPluginList();
+        List<Plugin> pluginList = PluginComponent.getPluginList();
         for (Plugin plugin : pluginList) {
         	plugin.init();
         }
     }
 
     private void destroyPlugin() {
-        List<Plugin> pluginList = PluginAbility.getPluginList();
+        List<Plugin> pluginList = PluginComponent.getPluginList();
         for (Plugin plugin : pluginList) {
             plugin.destroy();
         }
@@ -106,7 +106,7 @@ public class ContainerListener implements ServletContextListener {
     	List<Class<?>> initDataClassList = beanLoaderTemplate.getBeanClassListBySuper(InitializeData.class);
     	for(Class<?> cls : initDataClassList){
     		try {
-    			Object initInstatnce = BeanContainerAbility.getBean(cls);
+    			Object initInstatnce = BeanContainerComponent.getBean(cls);
 				Method initMethod = cls.getDeclaredMethod("init", null);
 				initMethod.setAccessible(true);
 				initMethod.invoke(initInstatnce, null);
