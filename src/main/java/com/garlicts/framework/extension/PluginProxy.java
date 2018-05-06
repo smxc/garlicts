@@ -1,4 +1,4 @@
-package com.garlicts.framework.plugin;
+package com.garlicts.framework.extension;
 
 import java.util.List;
 

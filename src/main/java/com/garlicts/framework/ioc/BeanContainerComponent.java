@@ -14,10 +14,8 @@ import com.garlicts.framework.aop.annotation.Aspect;
 import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.core.fault.InitializationError;
-import com.garlicts.framework.distributed.zookeeper.HttpServiceProvider;
 import com.garlicts.framework.ioc.annotation.Bean;
 import com.garlicts.framework.mvc.annotation.Controller;
-import com.garlicts.framework.plugin.Plugin;
 import com.garlicts.framework.transaction.annotation.Service;
 import com.garlicts.framework.util.ClassUtil;
 
@@ -58,15 +56,15 @@ public class BeanContainerComponent{
                 
             }
             
-            if(!basePackage.contains("com.garlicts.framework.plugin")){
-            	
-            	List<Class<?>> pluginList = beanLoaderTemplate.getBeanClassList("com.garlicts.framework.plugin");
-            	for(Class<?> cls : pluginList){
-                    // 注册插件
-                	registerPlugin(cls);
-            	}
-            	
-            }
+//            if(!basePackage.contains("com.garlicts.framework.plugin")){
+//            	
+//            	List<Class<?>> pluginList = beanLoaderTemplate.getBeanClassList("com.garlicts.framework.plugin");
+//            	for(Class<?> cls : pluginList){
+//                    // 注册插件
+//                	registerPlugin(cls);
+//            	}
+//            	
+//            }
             
             // 注册JdbcTemplate
             registerJdbcTemplate();
@@ -173,25 +171,25 @@ public class BeanContainerComponent{
     	
     }
     
-    /**
-     * <p>注册插件</p>
-     * 插件都实现Plugin接口 
-     */
-    public static void registerPlugin(Class<?> cls){
-    	
-        if(Plugin.class.isAssignableFrom(cls) && !cls.equals(Plugin.class)){
-        	Object beanInstance;
-			try {
-				beanInstance = cls.newInstance();
-	        	beanMap.put(cls, beanInstance);
-	        	logger.info(new StringBuffer("注册插件：").append(cls.getName()).toString());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-        }    	
-    	
-    }
+//    /**
+//     * <p>注册插件</p>
+//     * 插件都实现Plugin接口 
+//     */
+//    public static void registerPlugin(Class<?> cls){
+//    	
+//        if(Plugin.class.isAssignableFrom(cls) && !cls.equals(Plugin.class)){
+//        	Object beanInstance;
+//			try {
+//				beanInstance = cls.newInstance();
+//	        	beanMap.put(cls, beanInstance);
+//	        	logger.info(new StringBuffer("注册插件：").append(cls.getName()).toString());
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//
+//        }    	
+//    	
+//    }
     
     /**
      * 注册初始化类 

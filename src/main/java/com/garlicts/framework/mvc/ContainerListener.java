@@ -15,9 +15,9 @@ import com.garlicts.framework.InitializeData;
 import com.garlicts.framework.InstanceFactory;
 import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.core.BeanLoaderTemplate;
+import com.garlicts.framework.extension.Plugin;
+import com.garlicts.framework.extension.PluginComponent;
 import com.garlicts.framework.ioc.BeanContainerComponent;
-import com.garlicts.framework.plugin.Plugin;
-import com.garlicts.framework.plugin.PluginComponent;
 import com.garlicts.framework.util.StringUtil;
 
 /**

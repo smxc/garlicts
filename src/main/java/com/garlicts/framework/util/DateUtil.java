@@ -92,6 +92,20 @@ public class DateUtil {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		return sdf.format(date);
 	}
+	
+	public static Date parseDatetime(String dateStr){
+		
+		Date date = null;
+		DateFormat dateFormat = dbDateFormatThreadLocal.get();
+		try {
+			date = dateFormat.parse(dateStr);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return date;
+		
+	}
     
     public static void main(String[] args) {
 		

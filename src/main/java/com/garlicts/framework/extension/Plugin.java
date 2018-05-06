@@ -1,4 +1,4 @@
-package com.garlicts.framework.plugin;
+package com.garlicts.framework.extension;
 
 /**
  * 插件接口
@@ -12,14 +12,10 @@ public interface Plugin {
      * 初始化插件
      */
     void init();
-
-//    /**
-//     * 注册插件 
-//     */
-//    void register();
     
     /**
      * 销毁插件
      */
     void destroy();
+    
 }

@@ -1,4 +1,4 @@
-package com.garlicts.framework.plugin;
+package com.garlicts.framework.extension;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.InstanceFactory;
 import com.garlicts.framework.core.BeanLoaderTemplate;
 import com.garlicts.framework.core.fault.InitializationError;
@@ -31,7 +32,8 @@ public class PluginComponent {
         try {
         	
             // 获取并遍历所有的插件类（实现了 Plugin 接口的类）
-            List<Class<?>> pluginClassList = beanLoader.getBeanClassListBySuper(Plugin.class);
+            List<Class<?>> pluginClassList = beanLoader.getBeanClassListBySuper(FrameworkConstant.PLUGIN_PACKAGE, Plugin.class);
+            
             for (Class<?> pluginClass : pluginClassList) {
                 // 创建插件实例
                 Plugin plugin = (Plugin) pluginClass.newInstance();
@@ -40,7 +42,7 @@ public class PluginComponent {
                 // 将插件实例添加到插件列表中
                 pluginList.add(plugin);
                 logger.info("初始化插件：" + plugin.getClass().getName());
-            }        		
+            }
 
         } catch (Exception e) {
             throw new InitializationError("初始化 PluginAbility 出错！");

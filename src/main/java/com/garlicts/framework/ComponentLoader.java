@@ -4,10 +4,10 @@ import org.slf4j.Logger;
 
 import com.garlicts.framework.aop.AopProxyComponent;
 import com.garlicts.framework.dao.DatabaseComponent;
+import com.garlicts.framework.extension.PluginComponent;
 import com.garlicts.framework.ioc.BeanContainerComponent;
 import com.garlicts.framework.ioc.IocComponent;
 import com.garlicts.framework.mvc.ControllerComponent;
-import com.garlicts.framework.plugin.PluginComponent;
 import com.garlicts.framework.security.SecurityComponent;
 import com.garlicts.framework.util.ClassUtil;
 

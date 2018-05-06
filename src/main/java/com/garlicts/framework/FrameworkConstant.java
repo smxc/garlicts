@@ -22,7 +22,11 @@ public interface FrameworkConstant {
      */ 
     String CONFIG_FILE = "config.properties";
 //    String SQL_FILE = "sql.properties";
-    String BASE_PACKAGE = "garlicts.framework.base_package";    
+    String BASE_PACKAGE = "garlicts.framework.base_package";
+    /**
+     * 插件路径 
+     */
+    String PLUGIN_PACKAGE = "com.garlicts.framework.plugin";
     
     /**
      * 数据库连接的配置 
@@ -49,11 +53,6 @@ public interface FrameworkConstant {
      * 上传限制10M  
      */
     int UPLOAD_LIMIT = 10;
-    
-    /**
-     * 插件路径 
-     */
-//    String PLUGIN_PACKAGE = "garlicts.plugin.path";
     
     /**
      * redis服务器ip 

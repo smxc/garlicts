@@ -101,8 +101,11 @@ public class BeanLoaderTemplate{
 	                        if (jarEntryName.endsWith(".class")) {
 	                            // 获取类名
 	                            String className = jarEntryName.substring(0, jarEntryName.lastIndexOf(".")).replaceAll("/", ".");
-	                            // 执行添加类操作
-	                            doAddClass(classList, className);
+	                            if(className.startsWith(packageName)){
+		                            // 执行添加类操作
+		                            doAddClass(classList, className);
+	                            }
+
 	                        }
 	                    }						
 						
@@ -213,7 +216,27 @@ public class BeanLoaderTemplate{
         
         return classList;		
 		
-	}     
-    
+	}
+	
+    /**
+     * 获取包名下某父类（或接口）的所有子类（或实现类）
+     */	
+	public List<Class<?>> getBeanClassListBySuper(String packageName, Class<?> superClass) {
+
+        List<Class<?>> classList = new ArrayList<Class<?>>();
+        
+        List<Class<?>> list = getBeanClassListIterate(packageName);
+        
+        for(Class<?> cls : list){
+        	
+            if (superClass.isAssignableFrom(cls) && !superClass.equals(cls)) {
+            	classList.add(cls);
+            }
+            
+        }
+        
+        return classList;		
+		
+	} 	
     
 }
