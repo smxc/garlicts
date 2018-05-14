@@ -35,10 +35,6 @@ import com.garlicts.framework.util.StringUtil;
  * <li>{@link #set(String, String)} sets the header value to a single string value</li>
  * </ul>
  *
- * <p>Inspired by {@link com.sun.net.httpserver.Headers}.
- *
- * @author Arjen Poutsma
- * @since 3.0
  */
 public class HttpHeaders implements MultiValueMap<String, String>, Serializable {
 

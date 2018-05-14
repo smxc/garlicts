@@ -15,8 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
-import com.garlicts.framework.ioc.BeanContainerComponent;
-import com.garlicts.framework.util.ClassUtil;
 import com.garlicts.framework.util.JsonUtil;
 
 @WebServlet(name="ftpUploadServlet",urlPatterns="/ftpUploadServlet", loadOnStartup=2)

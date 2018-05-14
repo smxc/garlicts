@@ -10,7 +10,6 @@ import com.garlicts.framework.FrameworkConstant;
 import com.garlicts.framework.InstanceFactory;
 import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.core.BeanLoaderTemplate;
-import com.garlicts.framework.distributed.zookeeper.HttpService;
 import com.garlicts.framework.distributed.zookeeper.HttpServiceProvider;
 import com.garlicts.framework.mvc.annotation.Controller;
 import com.garlicts.framework.mvc.annotation.RemoteHttpService;

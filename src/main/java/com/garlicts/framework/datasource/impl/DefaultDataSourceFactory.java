@@ -1,6 +1,6 @@
 package com.garlicts.framework.datasource.impl;
 
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 /**
  * 默认数据源工厂

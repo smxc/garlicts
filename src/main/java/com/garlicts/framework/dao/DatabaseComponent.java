@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.garlicts.framework.InstanceFactory;
-import com.garlicts.framework.config.PropertiesProvider;
 import com.garlicts.framework.datasource.DataSourceFactory;
 
 /**

@@ -23,7 +23,7 @@ public class WebClientFactory extends BasePooledObjectFactory<WebClient> {
 		// js语法错误抛出异常，继续执行
 		webClient.getOptions().setThrowExceptionOnScriptError(false);
 		webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
-		webClient.getOptions().setTimeout(30000);
+		webClient.getOptions().setTimeout(10000);
 		// 让游览行为被记录
 		webClient.getOptions().setDoNotTrackEnabled(true);
 		// 启用ajax支持

@@ -3,9 +3,6 @@ package com.garlicts.framework.aop.proxy;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
@@ -18,7 +15,7 @@ import net.sf.cglib.proxy.MethodProxy;
  */
 public class ProxyManager {
 
-	private static final Logger logger = LoggerFactory.getLogger(ProxyManager.class); 
+//	private static final Logger logger = LoggerFactory.getLogger(ProxyManager.class); 
 	
 	/**
 	 * 根据目标类targetClass和代理链proxyList，生成代理对象
