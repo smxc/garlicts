@@ -4,27 +4,27 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 
+import com.garlicts.framework.util.StreamUtil;
 import com.garlicts.framework.util.StringUtil;
 
 /**
  * {@link ClientHttpResponse} implementation that uses standard JDK facilities.
  * Obtained via {@link SimpleBufferingClientHttpRequest#execute()} and
- * {@link SimpleStreamingClientHttpRequest#execute()}.
+ * {@link GarlictsClientHttpRequest#execute()}.
  *
  * @author Arjen Poutsma
  * @since 3.0
  */
-final class SimpleClientHttpResponse extends AbstractClientHttpResponse {
+final class GarlictsClientHttpResponse extends AbstractClientHttpResponse {
 
 	private final HttpURLConnection connection;
 
 	private HttpHeaders headers;
 
 
-	SimpleClientHttpResponse(HttpURLConnection connection) {
+	GarlictsClientHttpResponse(HttpURLConnection connection) {
 		this.connection = connection;
 	}
-
 
 	public int getRawStatusCode() throws IOException {
 		return this.connection.getResponseCode();
@@ -58,6 +58,13 @@ final class SimpleClientHttpResponse extends AbstractClientHttpResponse {
 	public InputStream getBody() throws IOException {
 		InputStream errorStream = this.connection.getErrorStream();
 		return (errorStream != null ? errorStream : this.connection.getInputStream());
+	}
+	
+	public String getBodyAsString() throws IOException {
+		
+		InputStream inputStream = this.connection.getInputStream();
+		return StreamUtil.getString(inputStream);
+		
 	}
 
 	public void close() {

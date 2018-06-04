@@ -21,5 +21,7 @@ public interface HttpInputMessage extends HttpMessage {
 	 * @throws IOException in case of I/O Errors
 	 */
 	InputStream getBody() throws IOException;
+	
+	String getBodyAsString() throws IOException;
 
 }

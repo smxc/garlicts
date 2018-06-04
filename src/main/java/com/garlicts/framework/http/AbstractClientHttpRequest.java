@@ -2,8 +2,12 @@ package com.garlicts.framework.http;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.util.List;
+import java.util.Map;
 
 import com.garlicts.framework.util.Assert;
+import com.garlicts.framework.util.StringUtil;
 
 
 /**
@@ -70,4 +74,19 @@ public abstract class AbstractClientHttpRequest implements ClientHttpRequest {
 	 */
 	protected abstract ClientHttpResponse executeInternal(HttpHeaders headers) throws IOException;
 
+	void addHeaders(HttpURLConnection connection, HttpHeaders headers) {
+		for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+			String headerName = entry.getKey();
+			if ("Cookie".equalsIgnoreCase(headerName)) {  // RFC 6265
+				String headerValue = StringUtil.collectionToDelimitedString(entry.getValue(), "; ");
+				connection.setRequestProperty(headerName, headerValue);
+			}
+			else {
+				for (String headerValue : entry.getValue()) {
+					connection.addRequestProperty(headerName, headerValue);
+				}
+			}
+		}
+	}	
+	
 }

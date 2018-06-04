@@ -10,13 +10,13 @@ import com.garlicts.framework.util.StreamUtil;
 
 /**
  * {@link ClientHttpRequest} implementation that uses standard JDK facilities to
- * execute streaming requests. Created via the {@link SimpleClientHttpRequestFactory}.
+ * execute streaming requests. Created via the {@link GarlictsClientHttpRequestFactory}.
  *
  * @author Arjen Poutsma
  * @since 3.0
- * @see SimpleClientHttpRequestFactory#createRequest(java.net.URI, HttpMethod)
+ * @see GarlictsClientHttpRequestFactory#createRequest(java.net.URI, HttpMethod)
  */
-final class SimpleStreamingClientHttpRequest extends AbstractClientHttpRequest {
+final class GarlictsClientHttpRequest extends AbstractClientHttpRequest {
 
 	private final HttpURLConnection connection;
 
@@ -27,7 +27,7 @@ final class SimpleStreamingClientHttpRequest extends AbstractClientHttpRequest {
 	private final boolean outputStreaming;
 
 
-	SimpleStreamingClientHttpRequest(HttpURLConnection connection, int chunkSize, boolean outputStreaming) {
+	GarlictsClientHttpRequest(HttpURLConnection connection, int chunkSize, boolean outputStreaming) {
 		this.connection = connection;
 		this.chunkSize = chunkSize;
 		this.outputStreaming = outputStreaming;
@@ -59,7 +59,7 @@ final class SimpleStreamingClientHttpRequest extends AbstractClientHttpRequest {
 					this.connection.setChunkedStreamingMode(this.chunkSize);
 				}
 			}
-			SimpleBufferingClientHttpRequest.addHeaders(this.connection, headers);
+			addHeaders(this.connection, headers);
 			this.connection.connect();
 			this.body = this.connection.getOutputStream();
 		}
@@ -73,14 +73,14 @@ final class SimpleStreamingClientHttpRequest extends AbstractClientHttpRequest {
 				this.body.close();
 			}
 			else {
-				SimpleBufferingClientHttpRequest.addHeaders(this.connection, headers);
+				addHeaders(this.connection, headers);
 				this.connection.connect();
 			}
 		}
 		catch (IOException ex) {
 			// ignore
 		}
-		return new SimpleClientHttpResponse(this.connection);
+		return new GarlictsClientHttpResponse(this.connection);
 	}
 
 }

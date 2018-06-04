@@ -18,10 +18,9 @@ import com.garlicts.framework.util.Assert;
  * @see java.net.HttpURLConnection
  * @see HttpComponentsClientHttpRequestFactory
  */
-public class SimpleClientHttpRequestFactory implements ClientHttpRequestFactory {
+public class GarlictsClientHttpRequestFactory implements ClientHttpRequestFactory {
 
 	private static final int DEFAULT_CHUNK_SIZE = 4096;
-
 
 	private Proxy proxy;
 
@@ -34,7 +33,6 @@ public class SimpleClientHttpRequestFactory implements ClientHttpRequestFactory 
 	private int readTimeout = -1;
 
 	private boolean outputStreaming = true;
-
 
 	/**
 	 * Set the {@link Proxy} to use for this request factory.
@@ -106,12 +104,7 @@ public class SimpleClientHttpRequestFactory implements ClientHttpRequestFactory 
 	public ClientHttpRequest createRequest(URI uri, HttpMethod httpMethod) throws IOException {
 		HttpURLConnection connection = openConnection(uri.toURL(), this.proxy);
 		prepareConnection(connection, httpMethod.name());
-		if (this.bufferRequestBody) {
-			return new SimpleBufferingClientHttpRequest(connection, this.outputStreaming);
-		}
-		else {
-			return new SimpleStreamingClientHttpRequest(connection, this.chunkSize, this.outputStreaming);
-		}
+		return new GarlictsClientHttpRequest(connection, this.chunkSize, this.outputStreaming);
 	}
 
 	/**

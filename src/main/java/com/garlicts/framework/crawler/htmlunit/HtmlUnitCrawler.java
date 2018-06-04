@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.WebResponse;
+import com.gargoylesoftware.htmlunit.WebWindow;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlTableRow;
 import com.garlicts.framework.util.MapUtil;
@@ -51,6 +52,7 @@ public abstract class HtmlUnitCrawler {
 		HtmlPage htmlPage = null;
 		
 		try {
+			
 			WebRequest webRequest = buildWebRequest(crawlerHttpRequest);
 			htmlPage = webClient.getPage(webRequest);
 			
@@ -67,7 +69,9 @@ public abstract class HtmlUnitCrawler {
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
+		} 
+		
+		finally {
 			webClientPool.returnObject(webClient);
 		}
 		
