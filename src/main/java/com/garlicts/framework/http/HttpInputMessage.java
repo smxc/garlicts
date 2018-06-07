@@ -20,8 +20,8 @@ public interface HttpInputMessage extends HttpMessage {
 	 * @return the input stream body (never {@code null})
 	 * @throws IOException in case of I/O Errors
 	 */
-	InputStream getBody() throws IOException;
+	InputStream getBody();
 	
-	String getBodyAsString() throws IOException;
+	String getBodyAsString();
 
 }

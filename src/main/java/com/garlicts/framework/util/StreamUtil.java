@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,11 @@ public class StreamUtil {
      * 从输入流中获取字符串
      */
     public static String getString(InputStream is) {
+    	
+    	if(Objects.equals(is, null)){
+    		return "";
+    	}
+    	
         StringBuilder sb = new StringBuilder();
         try {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));

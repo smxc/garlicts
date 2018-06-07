@@ -33,21 +33,26 @@ public abstract class AbstractClientHttpRequest implements ClientHttpRequest {
 		return getBodyInternal(this.headers);
 	}
 
-	public final ClientHttpResponse execute() throws IOException {
+	public final ClientHttpResponse execute() {
 		checkExecuted();
 		ClientHttpResponse result = executeInternal(this.headers);
 		this.executed = true;
 		return result;
 	}
 	
-	public final ClientHttpResponse executeJson() throws IOException {
+	public final ClientHttpResponse executeJson() {
 		
 		checkExecuted();
 		
 		headers.add("Content-Type", "application/json");
 		headers.add("Accept", "application/json");
 		
-		ClientHttpResponse result = executeInternal(this.headers);
+		ClientHttpResponse result = null;
+		try {
+			result = executeInternal(this.headers);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		this.executed = true;
 		
@@ -65,14 +70,14 @@ public abstract class AbstractClientHttpRequest implements ClientHttpRequest {
 	 * @param headers the HTTP headers
 	 * @return the body output stream
 	 */
-	protected abstract OutputStream getBodyInternal(HttpHeaders headers) throws IOException;
+	protected abstract OutputStream getBodyInternal(HttpHeaders headers);
 
 	/**
 	 * Abstract template method that writes the given headers and content to the HTTP request.
 	 * @param headers the HTTP headers
 	 * @return the response object for the executed request
 	 */
-	protected abstract ClientHttpResponse executeInternal(HttpHeaders headers) throws IOException;
+	protected abstract ClientHttpResponse executeInternal(HttpHeaders headers);
 
 	void addHeaders(HttpURLConnection connection, HttpHeaders headers) {
 		for (Map.Entry<String, List<String>> entry : headers.entrySet()) {

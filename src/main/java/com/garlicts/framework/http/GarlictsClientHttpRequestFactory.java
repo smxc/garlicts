@@ -101,10 +101,18 @@ public class GarlictsClientHttpRequestFactory implements ClientHttpRequestFactor
 	}
 
 
-	public ClientHttpRequest createRequest(URI uri, HttpMethod httpMethod) throws IOException {
-		HttpURLConnection connection = openConnection(uri.toURL(), this.proxy);
-		prepareConnection(connection, httpMethod.name());
+	public ClientHttpRequest createRequest(URI uri, HttpMethod httpMethod) {
+		
+		HttpURLConnection connection = null;
+		try {
+			connection = openConnection(uri.toURL(), this.proxy);
+			prepareConnection(connection, httpMethod.name());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		return new GarlictsClientHttpRequest(connection, this.chunkSize, this.outputStreaming);
+
 	}
 
 	/**

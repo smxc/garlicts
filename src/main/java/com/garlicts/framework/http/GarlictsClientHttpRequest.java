@@ -48,7 +48,7 @@ final class GarlictsClientHttpRequest extends AbstractClientHttpRequest {
 	}
 
 	@Override
-	protected OutputStream getBodyInternal(HttpHeaders headers) throws IOException {
+	protected OutputStream getBodyInternal(HttpHeaders headers) {
 		if (this.body == null) {
 			if (this.outputStreaming) {
 				int contentLength = (int) headers.getContentLength();
@@ -60,14 +60,19 @@ final class GarlictsClientHttpRequest extends AbstractClientHttpRequest {
 				}
 			}
 			addHeaders(this.connection, headers);
-			this.connection.connect();
-			this.body = this.connection.getOutputStream();
+			try {
+				this.connection.connect();
+				this.body = this.connection.getOutputStream();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 		}
 		return StreamUtil.nonClosing(this.body);
 	}
 
 	@Override
-	protected ClientHttpResponse executeInternal(HttpHeaders headers) throws IOException {
+	protected ClientHttpResponse executeInternal(HttpHeaders headers) {
 		try {
 			if (this.body != null) {
 				this.body.close();

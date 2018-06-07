@@ -20,8 +20,8 @@ public interface ClientHttpRequest extends HttpRequest, HttpOutputMessage {
 	 * @return the response result of the execution
 	 * @throws IOException in case of I/O errors
 	 */
-	ClientHttpResponse execute() throws IOException;
+	ClientHttpResponse execute();
 	
-	ClientHttpResponse executeJson() throws IOException;
+	ClientHttpResponse executeJson();
 
 }

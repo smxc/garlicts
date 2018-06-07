@@ -42,6 +42,17 @@ public class JdbcTemplate {
         queryRunner = new QueryRunner(dataSource);
     }
 
+    public <T> T queryOne(String sql, Class<T> resultClass){
+    	T result = null;
+    	try {
+    		result = queryRunner.query(sql, new BeanHandler<T>(resultClass));
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+    	printSQL(sql);
+    	return result;
+    }
+    
     /**
      * 查询对应的实体，返回单条记录
      */

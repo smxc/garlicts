@@ -55,15 +55,36 @@ final class GarlictsClientHttpResponse extends AbstractClientHttpResponse {
 		return this.headers;
 	}
 
-	public InputStream getBody() throws IOException {
-		InputStream errorStream = this.connection.getErrorStream();
-		return (errorStream != null ? errorStream : this.connection.getInputStream());
+	public InputStream getBody() {
+		
+		InputStream inputStream = null;
+		
+		try {
+			inputStream = this.connection.getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return inputStream;
+		
 	}
 	
-	public String getBodyAsString() throws IOException {
+	public String getBodyAsString() {
 		
-		InputStream inputStream = this.connection.getInputStream();
-		return StreamUtil.getString(inputStream);
+		InputStream inputStream = null;
+		String string = null;
+		try {
+			inputStream = this.connection.getInputStream();
+			string = StreamUtil.getString(inputStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			close();
+		}
+		
+		return string;
 		
 	}
 

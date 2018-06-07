@@ -21,6 +21,6 @@ public interface ClientHttpRequestFactory {
 	 * @return the created request
 	 * @throws IOException in case of I/O errors
 	 */
-	ClientHttpRequest createRequest(URI uri, HttpMethod httpMethod) throws IOException;
+	ClientHttpRequest createRequest(URI uri, HttpMethod httpMethod);
 
 }

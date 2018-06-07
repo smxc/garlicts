@@ -106,7 +106,7 @@ public class DateUtil {
 		return date;
 		
 	}
-    
+	
     public static void main(String[] args) {
 		
 //    	System.out.println(DateUtil.generateTransId());
