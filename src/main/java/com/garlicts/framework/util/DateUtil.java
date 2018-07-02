@@ -3,6 +3,7 @@ package com.garlicts.framework.util;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -107,14 +108,40 @@ public class DateUtil {
 		
 	}
 	
+	/**
+	 * 获取一年中的第几周 
+	 */
+	public static int getWeek(){
+		
+        Calendar cl = Calendar.getInstance();
+        return cl.get(Calendar.WEEK_OF_YEAR);
+        
+	}
+	
+	public static int getMonth(){
+		
+		Calendar cl = Calendar.getInstance();
+		return cl.get(Calendar.MONTH) + 1;
+		
+	}
+	
+	public static int getYear(){
+		
+		Calendar cl = Calendar.getInstance();
+		return cl.get(Calendar.YEAR);
+		
+	}
+	
     public static void main(String[] args) {
 		
 //    	System.out.println(DateUtil.generateTransId());
-    	System.out.println("----------------------------------------------");
-    	System.out.println(DateUtil.convert2StandardFormat("2016-02-02 12:00:01"));
-    	System.out.println("----------------------------------------------");
+//    	System.out.println("----------------------------------------------");
+//    	System.out.println(DateUtil.convert2StandardFormat("2016-02-02 12:00:01"));
+//    	System.out.println("----------------------------------------------");
 //    	System.out.println(DateUtil.getCurrentDatetime());
 //    	System.out.println(DateUtil.getCurrDatetimeWithDbFormat());
+    	
+//    	System.out.println(getWeek());
     	
 	}
 
